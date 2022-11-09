@@ -1,7 +1,7 @@
 const { Console } = require('console')
 const fs = require('fs')
 fs.writeFileSync('./productos.txt', `LISTADO DE PRODUCTOS: \n`)
-let id = 0
+let id = 0 
 
 class Contenedor {
 
