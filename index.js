@@ -79,7 +79,6 @@ async function main() {
 
   //BUSCA POR ID RANDOM
   let idRandom = Math.floor(Math.random() * 3 + 1);
-  console.log(idRandom);
   let buscaIdRandom = await productos.getById(idRandom);
 
   //CREA SERVIDOR
