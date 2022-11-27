@@ -1,0 +1,32 @@
+<h1>Listado de Productos</h1>
+    {{#if (products.length)}}
+        <table border="1px solid #000">
+            <thead>
+                <tr>
+                    <th width="150">NOMBRE</th>
+                    <th width="150">PRECIO</th>
+                    <th width="150">FOTO</th>
+                </tr>
+            </thead>
+            {{#each products}} 
+                <tbody>
+                    <tr>
+                        <th>{{this.name}}</th>
+                        <th>{{this.price}}</th>
+                        <th><img src="{{this.thumbnail}}" width="50"></img></th>
+                    </tr>
+                </tbody>
+            {{/each}}
+        </table>
+    {{/if}} 
+    {{#else}}
+        <p> No se encontraron productos </p>
+    {{/else}}
+<br>       
+<button id="formButton">Volver a ingresar productos</button> 
+<script>
+    const formButton = document.getElementById("formButton")
+    formButton.addEventListener("click", (event) => {
+        window.location = "/"
+    })
+</script>

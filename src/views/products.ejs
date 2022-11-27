@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Productos</title>
+    </head>
+    <body>
+        <h1>Listado de Productos</h1>
+            <% if (products.length) { %>
+                <table border="1px solid #000">
+                    <thead>
+                        <tr>
+                            <th width="150">NOMBRE</th>
+                            <th width="150">PRECIO</th>
+                            <th width="150">FOTO</th>
+                        </tr>
+                    </thead>
+                    <% products.forEach(product => { %>
+                        <tbody>
+                            <tr>
+                                <th><%= product.name %></th>
+                                <th><%= product.price %></th>
+                                <th><img src="<%= product.thumbnail %>" width="50"></img></th>
+                            </tr>
+                        </tbody>
+                    <% }) %>
+                </table>
+            <% } else { %>
+                <p> No se encontraron productos </p>
+            <% } %> 
+        <br>       
+        <button id="formButton">Volver a ingresar productos</button> 
+        <script>
+            const formButton = document.getElementById("formButton")
+            formButton.addEventListener("click", (event) => {
+                window.location = "/"
+            })
+        </script>
+    </body>
+</html>

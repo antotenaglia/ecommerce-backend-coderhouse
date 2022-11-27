@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Productos
+    body    
+        h1 Listado de Productos
+        br
+        if products.length
+            table(border='1')
+                thead 
+                    tr
+                        th(style='width:150px') NOMBRE 
+                        th(style='width:150px') PRECIO 
+                        th(style='width:150px') FOTO 
+                tbody 
+                each product in products 
+                    tr 
+                        th= product.name
+                        th= product.price
+                        th: img(src=product.thumbnail, width="50")
+        else 
+            p No se encontraron productos
+        br
+        br
+        button(id="formButton") Volver a ingresar productos
+        script.
+            const formButton = document.getElementById("formButton")
+            formButton.addEventListener("click", (event) => { 
+                window.location = "/"
+            })
