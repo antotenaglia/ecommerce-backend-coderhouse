@@ -18,16 +18,16 @@ app.use("/", routes)
 //se configura motor de plantillas hbs
 app.engine('hbs', engine({
   extname: ".hbs",
-  defaultLayout: join(__dirname, "/views/layouts/main.hbs"),
-  layoutsDir: join(__dirname, "/views/layouts"),
-  partialsDir: join(__dirname, "/views/partials")
+  defaultLayout: join(__dirname, "/views/hbs/layouts/main.hbs"),
+  layoutsDir: join(__dirname, "/views/hbs/layouts"),
+  partialsDir: join(__dirname, "/views/hbs/partials")
 }))
 
 //se establece motor de plantillas ejs
-app.set("view engine", "hbs");
+app.set("view engine", "ejs");
 
-//se establece carpeta donde se encuentran plantillas
-app.set("views", __dirname + '/views')
+//se establece carpeta donde se encuentran plantillas ejs
+app.set("views", __dirname + '/views/ejs')
 
 //se crea el servidor
 const connectedServer = app.listen(3000, () => {

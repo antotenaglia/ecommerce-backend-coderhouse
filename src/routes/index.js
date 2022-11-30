@@ -1,6 +1,10 @@
 import { Router } from "express";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 const router = Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const products = [
     {
@@ -22,7 +26,7 @@ const products = [
 
 //se define que la ruta "/" renderice productForm: formulario de carga de productos
 router.get("/", (req, res) => {
-    res.render("productForm")
+    res.render(join(__dirname, "../views/ejs/productForm.ejs"))
 });
 
 //se define que la ruta "/products" reciba el post y rediriga a la ruta "/": formulario de carga de productos 
@@ -36,8 +40,10 @@ router.post("/products", (req, res) => {
 
 //se define que la ruta "/products" renderice products: vista de productos cargados
 router.get("/products", (req, res) => {
-    res.render("products", {products})
+    res.render(join(__dirname, "../views/ejs/products.ejs"), {products})
 });
 
 
 export default router;
+
+
