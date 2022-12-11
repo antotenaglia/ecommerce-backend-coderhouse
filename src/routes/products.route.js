@@ -1,6 +1,9 @@
 import { Router } from "express";
+import * as fs from 'fs';
 
 const router = Router();
+
+let administrator = true; 
 
 //se define lista de productos
 const products = [
@@ -38,80 +41,102 @@ const products = [
 
 //se definen métodos a partir de la ruta inicial "/api/products"
 router.route("/")
-    //agrega productos -- para administrador
+    //agrega productos 
     .post((req, res) => { 
-        const { title, description, code, price, stock, thumbnail } = req.body;
-        const newProduct = {
-            id: products[products.length - 1].id + 1,
-            timestamp: Date.now(),
-            title,
-            description,
-            code,
-            price,
-            stock,
-            thumbnail,
-        }
-    
-        products.push(newProduct)
-    
-        res.status(201).json({status: "Product added", data: newProduct}) 
-    }) 
+        if (administrator) {
+            const { title, description, code, price, stock, thumbnail } = req.body;
+            const newProduct = {
+                id: products[products.length - 1].id + 1,
+                timestamp: Date.now(),
+                title,
+                description,
+                code,
+                price,
+                stock,
+                thumbnail,
+            };
+        
+            products.push(newProduct);
+
+            //se guardan los productos en 'products.txt'
+            async function saveProducts() {
+                try {
+                await fs.promises.writeFile('../../products.txt', JSON.stringify(products, null, 2));
+                } catch (error) {
+                throw new Error(`Error al guardar producto en el archivo: ${error}`);
+                }
+            };
+  
+            saveProducts();
+  
+            res.status(201).json({status: "Product added", productAdded: newProduct}); 
+        } else {
+            return res.status(404).json({error: -1, description: 'método POST no autorizado'});
+        };
+    }); 
 
 //se definen métodos a partir de la ruta "/api/products/:id"
 router.route("/:id")
-    //devuelve todos los productos o un producto según su id -- para usuario y administrador
+    //devuelve todos los productos o un producto según su id 
     .get((req, res) => {
         const { id } = req.params;
         const productFound = products.find((product) => product.id === Number(id)) 
-        const response = productFound ? {status: "Product found", data: productFound} : {error: "Product not found", data: products}
+        const response = productFound ? {status: "Product found", product: productFound} : {error: "Product not found", productList: products}
         const statusCode = productFound ? 200 : 404
         
-        //para usuario
-
-        //para administrador
-        res.status(statusCode).json(response)
+        res.status(statusCode).json(response);
     })
 
-    //actualiza un producto según su id -- para administrador
+    //actualiza un producto según su id 
     .put((req, res) => {
-        const { id } = req.params;
-        const { title, description, code, price, stock, thumbnail } = req.body;
-        const productUpdated = {
-            id,
-            timestamp: Date.now(),
-            title,
-            description,
-            code,
-            price,
-            stock,
-            thumbnail,
+        if (administrator) {
+            const { id } = req.params;
+            const { title, description, code, price, stock, thumbnail } = req.body;
+            const productUpdated = {
+                id,
+                timestamp: Date.now(),
+                title,
+                description,
+                code,
+                price,
+                stock,
+                thumbnail,
+            };
+            const productToUpdate = products.find((product) => product.id === Number(id));
+            const indexProductToUpdate = products.indexOf(productToUpdate);
+
+            if (!indexProductToUpdate) {
+            return res.status(404).json({error: 'Product not found'})
+            };
+        
+            products.splice(indexProductToUpdate, 1, productUpdated);
+        
+            res.status(200).json({status: "Product updated", product: productUpdated});
+        } else {
+            return res.status(404).json({error: -1, description: 'método PUT no autorizado'})
         }
-        const indexProductToUpdate = products.find((product) => product.id === Number(id)) 
-    
-        if (!indexProductToUpdate) {
-        return res.status(404).json({error: 'Product not found'})
-        }
-    
-        products.splice(indexProductToUpdate, 1, productUpdated)
-    
-        res.status(200).json({status: "Product updated", data: productUpdated})
     })
 
-    //elimina un producto según su id -- para administrador
+    //elimina un producto según su id 
     .delete((req, res) => {
-        const { id } = req.params;
-        const productToDelete = products.find((product) => product.id === Number(id)) 
-        const indexProductToDelete = products.indexOf(productToDelete)
-    
-        if (!productToDelete) {
-        return res.status(404).json({error: 'Product not found'})
+        if (administrator) {
+            const { id } = req.params;
+            const productToDelete = products.find((product) => product.id === Number(id));
+            const indexProductToDelete = products.indexOf(productToDelete);
+        
+            if (!productToDelete) {
+            return res.status(404).json({error: 'Product not found'})
+            };
+        
+            products.splice(indexProductToDelete, 1);
+        
+            res.status(200).json({status: "Product deleted", product: productToDelete});
+        } else {
+            return res.status(404).json({error: -1, description: 'método DELETE no autorizado'})
         }
-    
-        products.splice(indexProductToDelete, 1)
-    
-        res.status(200).json({status: "Product deleted", data: productToDelete})
-    })
+    });
 
-export default productsRouter;
+export default router;
+
 
 

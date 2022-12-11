@@ -1,6 +1,6 @@
-import express from "express";
-import productsRouter from "./routes/products.route";
-import cartRouter from "./routes/cart.route";
+import express, { json, urlencoded } from "express";
+import productsRouter from "./routes/products.route.js";
+import cartRouter from "./routes/cart.route.js";
 
 const app = express();
 
@@ -11,6 +11,25 @@ app.use(urlencoded({ extended: true }))
 //se definen las rutas 
 app.use("/api/products", productsRouter)
 app.use("/api/cart", cartRouter)
+
+//se define error por métodos no implementados
+app.use(function(req, res) {
+  let obj = {error: -2};
+
+  if (req.method === "DELETE") {
+      obj.description = "DELETE method not supported";
+  } else if (req.method === "PUT") {
+      obj.description = "PUT method not supported";
+  } else if (req.method === "GET") {
+    obj.description = "GET method not supported";
+  } else if (req.method === "POST") {
+    obj.description = "POST method not supported";
+  } else {
+    obj.description = "Invalid method";
+  }
+
+  res.status(404).json(obj);
+});
 
 //se crea el servidor
 const connectedServer = app.listen(8080, () => {
