@@ -3,73 +3,36 @@ import * as fs from 'fs';
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import productsContainer from "../products.container.js";
-import cartContainer from "../cart.container.js";
 
 const router = Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+//obtiene productos del archivo "products.txt"
 const products = new productsContainer(join(__dirname, "../../products.txt")); 
 const productsList = await products.getAllProducts();
 
-const cart = new cartContainer(join(__dirname, "../../carts.txt")); 
-const cartList = await products.getAllProducts();
-
-// //se define lista de productos
-// const products = [
-//     {
-//         id: 1,
-//         timestamp: Date.now(),
-//         title: "Remera",
-//         description: "Lisa manga corta",
-//         code: 101,
-//         price: 1465,
-//         stock: 10,
-//         thumbnail: "https://articulo.mercadolibre.com.ar/MLA-1176235635-remera-lisa-jersey-premium-peinado-manga-corta-_JM?searchVariation=175410231753#searchVariation=175410231753&position=1&search_layout=grid&type=item&tracking_id=3c1f3ff9-adf9-4313-86ac-e7eb9b4e794f",
-//     },
-//     {
-//         id: 2,
-//         timestamp: Date.now(),
-//         title: "Pantalón",
-//         description: "Largo elastizado",
-//         code: 201,
-//         price: 5490,
-//         stock: 15,
-//         thumbnail: "https://articulo.mercadolibre.com.ar/MLA-901089177-pantalon-jogger-elastizado-tela-gabardina-_JM?searchVariation=70673583729#searchVariation=70673583729&position=4&search_layout=grid&type=item&tracking_id=547403d9-cc41-4eb8-92de-08ff7de22b66",
-//     },
-//     {
-//         id: 3,
-//         timestamp: Date.now(),
-//         title: "Camisa",
-//         description: "Lisa entallada",
-//         code: 301,
-//         price: 4150,
-//         stock: 7,
-//         thumbnail: "https://articulo.mercadolibre.com.ar/MLA-859207549-camisa-lisa-varios-colores-slim-fit-entallada-_JM?searchVariation=57077745991#searchVariation=57077745991&position=2&search_layout=grid&type=item&tracking_id=b025acf3-30d1-4eb1-8ec2-dbc9635ae8bf",
-//     },
-// ];
-
-//se define carrito
-// const cart = [
-//     {
-//         id: 1, 
-//         timestamp: Date.now(),
-//         products: productsList,
-//     }
-// ];
+const cart = [];
 
 //se definen métodos a partir de la ruta inicial "/api/cart"
 router.route("/")
     //crea carrito y devuelve su id
     .post((req, res) => {       
         const { title, description, code, price, stock, thumbnail } = req.body; 
+        let newId;
+
+        if (cart.length == 0) {
+            newId = 1;
+        } else {
+            newId = cart[cart.length - 1].id + 1;
+        }
 
         const newCart = 
             {
-                id: cartList[cartList.length - 1].id + 1, 
+                id: newId, 
                 timestamp: Date.now(),
-                products: [     //cómo agrego varios productos?
+                products: [     
                     {
                         id: productsList[productsList.length - 1].id + 1,
                         title,
@@ -83,20 +46,20 @@ router.route("/")
                 ],
             };
     
-        cartList.push(newCart);
-
+        cart.push(newCart);
+            
         //se guardan los carritos en 'carts.txt'
         async function saveCarts() {
             try {
-            await fs.promises.writeFile('../../carts.txt', JSON.stringify(cartList, null, 2));
+                await fs.promises.writeFile('carts.txt', JSON.stringify(cart, null, 2));
             } catch (error) {
-            throw new Error(`Error al guardar producto en el archivo: ${error}`);
+                throw new Error(`Error al guardar producto en el archivo: ${error}`);
             }
         };  
 
         saveCarts();
     
-        res.status(201).json({status: "Cart added", idCart: newCart.id, cart: cartList});
+        res.status(201).json({status: "Cart added", idCart: newCart.id, cart: cart});
     }); 
 
 //se definen métodos a partir de la ruta "/api/cart/:id"
@@ -104,8 +67,8 @@ router.route("/:id")
     //elimina carrito según su id
     .delete((req, res) => {
         const { id } = req.params;
-        const cartToDelete = cartList.find((cart) => cart.id === Number(id));
-        const indexCartToDelete = cartList.indexOf(cartToDelete);
+        const cartToDelete = cart.find((cart) => cart.id === Number(id));
+        const indexCartToDelete = cart.indexOf(cartToDelete);
     
         if (!cartToDelete) {
         return res.status(404).json({error: 'Cart not found'})
@@ -121,7 +84,7 @@ router.route("/:id/products")
     //devuelve todos los productos del carrito segun id del carrito
     .get((req, res) => {
         const { id } = req.params;
-        const cartFound = cartList.find((cart) => cart.id === Number(id)); 
+        const cartFound = cart.find((cart) => cart.id === Number(id)); 
         const response = cartFound ? {status: "Cart found", products: cartFound.products} : {error: "Cart not found"}
         const statusCode = cartFound ? 200 : 404
 
@@ -132,7 +95,7 @@ router.route("/:id/products")
     .post((req, res) => { 
         const { id } = req.params;
         const { id_prod } = req.body;
-        const cartFound = cartList.find((cart) => cart.id === Number(id)); 
+        const cartFound = cart.find((cart) => cart.id === Number(id)); 
         const productFound = productsList.find((product) => product.id === Number(id_prod));
 
         cartFound.products.push(productFound);
@@ -146,7 +109,7 @@ router.route("/:id/products/:id_prod")
     .delete((req, res) => {
         const { id } = req.params;
         const { id_prod } = req.params;
-        const cartToFind = cartList.find((cart) => cart.id === Number(id));
+        const cartToFind = cart.find((cart) => cart.id === Number(id));
         const productToDelete = cartToFind.products.find((product) => product.id === Number(id_prod)); 
         const indexProductToDelete = cartToFind.products.indexOf(productToDelete);
     

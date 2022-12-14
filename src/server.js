@@ -4,7 +4,7 @@ import cartRouter from "./routes/cart.route.js";
 
 const app = express();
 
-//traducen información del req.body en formato JS
+//traduce información del req.body en formato JS
 app.use(json())
 app.use(urlencoded({ extended: true }))
 

@@ -1,7 +1,18 @@
 [
-    {
-        id: 1, 
-        timestamp: Date.now(),
-        products: [],
-    }
+  {
+    "id": 1,
+    "timestamp": 1670985935358,
+    "products": [
+      {
+        "id": 4,
+        "title": "Remera",
+        "description": "Lisa manga corta",
+        "code": 101,
+        "price": 1465,
+        "stock": 10,
+        "thumbnail": "https://articulo.mercadolibre.com.ar/MLA-1176235635-remera-lisa-jersey-premium-peinado-manga-corta-_JM?searchVariation=175410231753#searchVariation=175410231753&position=1&search_layout=grid&type=item&tracking_id=3c1f3ff9-adf9-4313-86ac-e7eb9b4e794f",
+        "timestamp": 1670985935358
+      }
+    ]
+  }
 ]
