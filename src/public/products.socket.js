@@ -16,9 +16,9 @@ const renderProduct = (productData) => {
       return `
         <tbody> 
           <tr>
-            <th>${productInfo.productName}</th>
-            <th>${productInfo.productPrice}</th>
-            <th><img src="${productInfo.productThumbnail}" width="50"></img></th>
+            <th>${productInfo.title}</th>
+            <th>${productInfo.price}</th>
+            <th><img src="${productInfo.thumbnail}" width="50"></img></th>
           </tr>
         </tbody>`;
     });
