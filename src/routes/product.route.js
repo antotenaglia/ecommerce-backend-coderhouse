@@ -1,37 +1,15 @@
 import { Router } from "express";
-import { Daos } from "../daos/index.js";
+import { productController } from "../controllers/product.controller.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-    const response = await Daos.ProductDao.getAll();
-  
-    res.json(response);
-});
+router.route("/")
+    .get(productController.getAllProducts)
+    .post(productController.createProduct)
 
-router.post("/", async (req, res) => {
-    const response = await Daos.ProductDao.create(req.body);
-  
-    res.json(response);
-});
-
-router.get(":id", async (req, res) => {
-    const response = await Daos.ProductDao.getById(req.params.id);
-  
-    res.json(response);
-});
-
-router.put(":id", async (req, res) => {
-    const response = await Daos.ProductDao.update(req.body, req.params.id);
-  
-    res.json(response);
-});
-
-router.delete(":id", async (req, res) => {
-    const response = await Daos.ProductDao.delete(req.params.id);
-  
-    res.json(response);
-});
-
+router.route("/:_id")
+    .get(productController.getProductById)
+    .put(productController.updateProductById)
+    .delete(productController.deleteProductById)
 
 export const productRouter = router;
