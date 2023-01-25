@@ -1,23 +1,7 @@
 import { Daos } from "../daos/index.js";
 import { ProductMongoDao } from "../daos/products/productMongo.dao.js";
-import { ProductFirebaseDao } from "../daos/products/productFirebase.dao.js";
-import { config } from "../config/config.js";
 
-let Product;
-
-const productFirebase = async () => {
-    new Daos.ProductDao(ProductFirebaseDao)
-};
-
-const productMongo = async () => {
-    new Daos.ProductDao(ProductMongoDao)
-};
-
-if (config.database === "MONGO") {
-  Product = productMongo;
-} else {
-  Product = productFirebase;
-}
+const Product = new Daos.ProductDao(ProductMongoDao);
 
 const getAllProducts = async (req, res) => {
   try {

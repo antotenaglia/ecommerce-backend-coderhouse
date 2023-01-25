@@ -9,9 +9,9 @@ app.use(json());
 //se definen las rutas 
 app.use("/", routes);
 
-//se crea el servidor y se conecta a base de datos - puede ser mongo o firebase
-db.connectDb(config.dbUrl).then(() => {
-  console.log("Database connected");
+//se crea el servidor y se conecta a base de datos mongo
+db.connectMongo(config.dbUrl).then(() => {
+  console.log("Database Mongo connected");
   app.listen(3000, () => {
     console.log("Server listening in port 3000");
   });
