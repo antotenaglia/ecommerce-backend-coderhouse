@@ -1,0 +1,13 @@
+<div>
+    <h2>Bienvenido/a {{loginName}}</h2>
+    <form action="/logout" method="get">
+        <input type="submit" value="Cerrar sesión">
+    </form>
+</div>
+<script>
+    function login() {
+        location.href = '/login'
+    }
+
+    setTimeout(login, 60000)
+</script>
