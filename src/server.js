@@ -6,6 +6,9 @@ import { config } from "./config/config.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { engine } from "express-handlebars";
+import passport from "passport";
+import { User } from "./models/user.model.js";
+import { passportStrategies } from "./lib/passport.lib.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,6 +22,8 @@ const mongoOptions = {
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //se persisten las sesiones en mongo Atlas
 app.use(
@@ -37,6 +42,7 @@ app.use(
   })
 );
 
+//se definen vistas en hbs
 app.engine('hbs', engine({
   extname: ".hbs",
   defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
@@ -46,6 +52,17 @@ app.engine('hbs', engine({
 
 app.set('view engine', 'hbs');
 
+//se configura passport
+passport.use("login", passportStrategies.loginStrategy);
+passport.use("register", passportStrategies.registerStrategy);
+
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id);
+});
 
 //se define que la ruta "/" use routes
 app.use("/", router)
