@@ -6,23 +6,26 @@ const __dirname = dirname(__filename);
 
 const serverLogin = (req, res) => {
   if (req.isAuthenticated()) {
-    const user = req.session.user; //req.session.user??? él puso req.user
-    return res.render("welcome", { email: user.email });
-  } else {    //esto va??
-    res.redirect("/login");
-  }
+    const user = req.user; 
 
+    return res.render("welcome", { email: user.email });
+  }
   res.sendFile(join(__dirname, "../../views/login.html"));
 };
 
-const serverRegister = (req, res) => {
-  if (req.isAuthenticated()) {
-    const user = req.session.user;
-
-    return res.redirect("/login");
-  }
-
+const getRegister = (req, res) => {
   res.sendFile(join(__dirname, "../../views/register.html"));
+};
+
+const postRegister = (req, res) => {
+
+  const user = req.user;
+  
+  if (user) {
+    return res.render("welcome", { username: user.username });
+  } 
+
+  return res.render("registerError");
 };
 
 // const serverWelcome = (req, res) => {
@@ -68,18 +71,15 @@ const registerFailure = (req, res) => {
 // };
 
 const logout = (req, res) => {
-    const user = req.session.user;
-
-    req.session.destroy(); //va????
-
-    req.logout(() => {
-      return res.render("logout", { email: user.email });
-    });
+    const user = req.user;
+    //req.session.destroy(); //va????
+    return res.render("logout", { username: user.username });
 };
 
 export const controller = {
     serverLogin,
-    serverRegister,
+    getRegister,
+    postRegister,
     loginFailure,
     registerFailure,
     logout,

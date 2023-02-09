@@ -11,8 +11,8 @@ router
 
 router
     .route("/register")
-    .get(controller.serverRegister)
-    .post(passport.authenticate("register", { failureRedirect: "/fail-register" }), controller.serverRegister)  
+    .get(controller.getRegister)
+    .post(passport.authenticate("register", { failureRedirect: "/fail-register" }), controller.postRegister)  
 
 router
     .route("/fail-login")
@@ -22,8 +22,6 @@ router
     .route("/fail-register")
     .get(controller.registerFailure)
 
-router
-    .route("/logout")
-    .get(controller.logout)
+router.get("/logout", controller.logout);
 
 export default router;

@@ -10,9 +10,9 @@ const validatePassword = (plainPassword, hashedPassword) => {
   return bcrypt.compareSync(plainPassword, hashedPassword);
 };
 
-const loginStrategy = new LocalStrategy(async (email, password, done) => {
+const loginStrategy = new LocalStrategy(async (username, password, done) => {
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
 
         if (!user || !validatePassword(password, user.password)) {
         return done("Invalid credentials", null);   //return a loginError??
@@ -24,28 +24,30 @@ const loginStrategy = new LocalStrategy(async (email, password, done) => {
     }
 });
 
-const registerStrategy = new LocalStrategy({ passReqToCallback: true }, async (req, email, password, done) => {
-    try {
-        const existingUser = await User.findOne({ email });
-
+const registerStrategy = new LocalStrategy(
+    { passReqToCallback: true },
+    async (req, username, password, done) => {
+      try {
+        const existingUser = await User.findOne({ username: username });
+  
         if (existingUser) {
-            return done("Username already in use", null);  //return a registerError??
-        }
-
+         return done(null, null);
+        } 
+  
         const newUser = {
-            //username, //email: req.bosy.email ???
-            email: req.body.email,
-            password: hashPassword(password),
+          username,
+          password: hashPassword(password)
         };
         const createdUser = await User.create(newUser);
-
+  
         req.user = createdUser;
-
+  
         done(null, createdUser);
-    } catch (err) {
+      
+      } catch (err) {
         done("Error while register", null);
+      }
     }
-}
-);
+  );
 
 export const passportStrategies = { loginStrategy, registerStrategy };
