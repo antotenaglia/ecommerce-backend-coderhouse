@@ -36,7 +36,7 @@ app.use(
       mongoOptions,
     }),
     cookie: {
-      maxAge: 60000, //tiempo de expiración de la sesión
+      maxAge: 600000, //tiempo de expiración de la sesión - 10 min
     },
   })
 );
@@ -54,6 +54,7 @@ app.set('view engine', 'hbs');
 //se configura passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use("login", passportStrategies.loginStrategy);
 passport.use("register", passportStrategies.registerStrategy);
 
@@ -69,6 +70,7 @@ passport.deserializeUser(async (id, done) => {
 //se define que la ruta "/" use routes
 app.use("/", router);
 
+//se crea db para los usuarios registrados
 mongoose.connect(config.mongoUrl);
 
 //se crea el servidor

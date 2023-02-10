@@ -12,10 +12,10 @@ const validatePassword = (plainPassword, hashedPassword) => {
 
 const loginStrategy = new LocalStrategy(async (username, password, done) => {
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: username });
 
         if (!user || !validatePassword(password, user.password)) {
-        return done("Invalid credentials", null);   //return a loginError??
+        return done(null, null);   
         }
 
         done(null, user);
