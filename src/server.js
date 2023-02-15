@@ -10,6 +10,7 @@ import passport from "passport";
 import { User } from "./models/user.model.js";
 import { passportStrategies } from "./lib/passport.lib.js";
 import mongoose from "mongoose";
+import yargs from "yargs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,7 +28,7 @@ app.use(urlencoded({ extended: true }));
 //se persisten las sesiones en mongo Atlas
 app.use(
   session({
-    secret: "coderhouse",
+    secret: config.mongoSecret,
     rolling: true, //reinicia el tiempo de expiracion de las sesiones con cada request
     resave: false,
     saveUninitialized: false,
@@ -64,7 +65,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id);
-  return user;
+
+  done(null, user);
 });
 
 //se define que la ruta "/" use routes
@@ -73,8 +75,17 @@ app.use("/", router);
 //se crea db para los usuarios registrados
 mongoose.connect(config.mongoUrl);
 
+//se obtiene puerto de la linea de comandos
+const args = yargs(process.argv.slice(2))
+  .alias({
+    p: "puerto",
+  })
+  .default({
+    puerto: 8080,
+  }).argv;
+
 //se crea el servidor
-const connectedServer = app.listen(3000, () => {
+const connectedServer = app.listen(args.puerto, () => {
   console.log(
     `Servidor HTTP escuchando en el puerto ${connectedServer.address().port}`
   );

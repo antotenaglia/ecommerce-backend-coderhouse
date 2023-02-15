@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "nodemon ./src/server.js"
+    "start": "nodemon ./src/server.js -p 3000"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -23,6 +23,8 @@
     "passport-local": "^1.0.0",
     "pug": "^3.0.2",
     "socket.io": "^4.5.4",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.4",
+    "util": "^0.12.5",
+    "yargs": "^17.6.2"
   }
 }

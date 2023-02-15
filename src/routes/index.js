@@ -22,6 +22,16 @@ router
     .route("/fail-register")
     .get(controller.registerFailure)
 
-router.get("/logout", controller.logout);
+router
+    .route("/logout")
+    .get(controller.logout);
+
+router
+    .route("/info")
+    .get(controller.info);
+
+router
+    .route("/randoms")
+    .get(controller.randoms);
 
 export default router;
