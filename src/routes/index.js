@@ -31,7 +31,7 @@ router
     .get(controller.info);
 
 router
-    .route("/randoms")
+    .route("/api/randoms")
     .get(controller.randoms);
 
 export default router;

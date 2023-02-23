@@ -1,0 +1,47 @@
+//consigna 1. Ejecutar servidores NODE//
+
+COMANDOS con NODEMON:
+
+nodemon ./src/server.js -p 3000 --m FORK --> modo fork
+nodemon ./src/server.js -p 3000 --m CLUSTER --> modo cluster
+
+COMANDOS con FOREVER:
+
+forever start src/server.js -p 3000 --m FORK --> modo fork
+forever start src/server.js -p 3000 --m CLUSTER --> modo cluster
+forever list --> lista todos los procesos
+forever stopall --> detiene todos los procesos
+
+COMANDOS con PM2: 
+
+pm2 start src/server.js --> modo fork
+pm2 start src/server.js -i max --> modo cluster
+pm2 start src/server.js --watch --> modo fork en escucha
+pm2 start src/server.js --watch -i max --> modo cluster en escucha
+pm2 list --> lista todos los procesos
+pm2 delete all --> detiene todos los procesos
+
+--------------------------------------------------------------------------
+
+//consigna 2a. Servidor NGINX//
+
+COMANDO AL PUERTO 8080 EN MODO FORK: 
+
+pm2 start src/server.js -- -p 8080 --m FORK
+
+COMANDO AL PUERTO 8081 EN MODO CLUSTER: 
+
+pm2 start src/server.js -f -- -p 8081 --m CLUSTER 
+
+--------------------------------------------------------------------------
+
+//consigna 2b. Servidor NGINX//
+
+COMANDOS AL PUERTO 8080/8081/8082/8083/8084/8085 EN MODO FORK: 
+
+pm2 start src/server.js -- -p 8080 --m FORK
+pm2 start src/server.js -f -- -p 8081 --m FORK
+pm2 start src/server.js -f -- -p 8082 --m FORK
+pm2 start src/server.js -f -- -p 8083 --m FORK
+pm2 start src/server.js -f -- -p 8084 --m FORK
+pm2 start src/server.js -f -- -p 8085 --m FORK

@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import yargs from "yargs";
 import util from "util";
 import { fork } from "child_process";
+import os from "os";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -54,7 +55,7 @@ const logout = (req, res) => {
 const info = (req, res) => {
   const entry = JSON.stringify(yargs(process.argv.slice(2)).argv);
   const path = process.execPath; 
-  const os = process.platform;
+  const osName = process.platform;
   const idprocess = process.pid;
   const version = process.version;
   const projectFolder = process.cwd();
@@ -62,15 +63,17 @@ const info = (req, res) => {
     showHidden: false,
     depth: null,
   });
+  const numCPUs = os.cpus().length;
 
   return res.render("info", { 
     entry: entry, 
     path: path, 
-    os: os, 
+    osName: osName, 
     idprocess: idprocess, 
     version: version, 
     projectFolder: projectFolder, 
-    rss: rss 
+    rss: rss, 
+    numCPUs: numCPUs
   });
 };
 
