@@ -1,0 +1,124 @@
+Statistical profiling result from info-debug-v8.log, (672563 ticks, 12 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+  666756   99.1%          C:\WINDOWS\SYSTEM32\ntdll.dll
+   5202    0.8%          C:\Program Files\nodejs\node.exe
+    145    0.0%          C:\WINDOWS\System32\KERNELBASE.dll
+     49    0.0%          C:\WINDOWS\System32\KERNEL32.DLL
+      5    0.0%          C:\WINDOWS\system32\mswsock.dll
+      5    0.0%          C:\WINDOWS\System32\WS2_32.dll
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+     63    0.0%   15.7%  LazyCompile: *serializeInto C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\serializer.js:553:23
+     32    0.0%    8.0%  LazyCompile: *write C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:427:15
+     27    0.0%    6.7%  LazyCompile: *measureRoundTripTime C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\monitor.js:288:30
+     21    0.0%    5.2%  LazyCompile: *deserializeObject C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\deserializer.js:65:27
+     21    0.0%    5.2%  LazyCompile: *command C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:274:12
+     18    0.0%    4.5%  LazyCompile: *processTimers node:internal/timers:487:25
+     17    0.0%    4.2%  LazyCompile: *listOnTimeout node:internal/timers:507:25
+     15    0.0%    3.7%  Function: ^processTimers node:internal/timers:487:25
+     12    0.0%    3.0%  LazyCompile: *getEncodingOps node:buffer:684:24
+      9    0.0%    2.2%  Function: ^<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\monitor.js:304:58
+      7    0.0%    1.7%  LazyCompile: *serializeNumber C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\serializer.js:44:25
+      7    0.0%    1.7%  LazyCompile: *alloc node:buffer:365:30
+      5    0.0%    1.2%  LazyCompile: *serializeLong C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\serializer.js:302:23
+      5    0.0%    1.2%  LazyCompile: *serializeBinary C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\serializer.js:462:25
+      5    0.0%    1.2%  LazyCompile: *ondata node:internal/streams/readable:752:18
+      5    0.0%    1.2%  LazyCompile: *Msg C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\commands.js:317:16
+      5    0.0%    1.2%  LazyCompile: *Long C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\long.js:59:18
+      4    0.0%    1.0%  LazyCompile: *processIncomingData C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\message_stream.js:84:29
+      4    0.0%    1.0%  LazyCompile: *Long.compare C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\long.js:291:39
+      4    0.0%    1.0%  Function: ^supportsOpMsg C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:408:23
+      4    0.0%    1.0%  Function: ^measureRoundTripTime C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\monitor.js:288:30
+      3    0.0%    0.7%  LazyCompile: *writeInt32LE node:internal/buffer:860:22
+      3    0.0%    0.7%  LazyCompile: *write node:buffer:598:12
+      3    0.0%    0.7%  LazyCompile: *updateServers C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\topology.js:488:23
+      3    0.0%    0.7%  LazyCompile: *serverUpdateHandler C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\topology.js:320:24
+      3    0.0%    0.7%  LazyCompile: *processTicksAndRejections node:internal/process/task_queues:68:35
+      3    0.0%    0.7%  LazyCompile: *copy node:buffer:782:16
+      3    0.0%    0.7%  LazyCompile: *_unrefTimer node:net:441:52
+      3    0.0%    0.7%  LazyCompile: *Readable.read node:internal/streams/readable:394:35
+      3    0.0%    0.7%  LazyCompile: *Long.add C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\long.js:252:35
+      3    0.0%    0.7%  Function: ^listOnTimeout node:internal/timers:507:25
+      3    0.0%    0.7%  Function: ^command C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:274:12
+      2    0.0%    0.5%  LazyCompile: *validateNumber node:internal/validators:124:24
+      2    0.0%    0.5%  LazyCompile: *slice node:buffer:599:12
+      2    0.0%    0.5%  LazyCompile: *resolve node:path:158:10
+      2    0.0%    0.5%  LazyCompile: *readableAddChunk node:internal/streams/readable:236:26
+      2    0.0%    0.5%  LazyCompile: *now C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:537:13
+      2    0.0%    0.5%  LazyCompile: *nextTick node:internal/process/task_queues:104:18
+      2    0.0%    0.5%  LazyCompile: *get node:internal/bootstrap/pre_execution:426:8
+      2    0.0%    0.5%  Function: ^getReadPreference C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\wire_protocol\shared.js:8:27
+      2    0.0%    0.5%  Function: ^fromString C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:315:22
+      2    0.0%    0.5%  Function: ^arrayClone node:events:865:20
+      1    0.0%    0.2%  LazyCompile: *writeU_Int32LE node:internal/buffer:690:24
+      1    0.0%    0.2%  LazyCompile: *writeGeneric node:internal/stream_base_commons:147:22
+      1    0.0%    0.2%  LazyCompile: *write node:buffer:1058:40
+      1    0.0%    0.2%  LazyCompile: *updateRsFromPrimary C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\topology_description.js:257:29
+      1    0.0%    0.2%  LazyCompile: *update C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\topology_description.js:131:11
+      1    0.0%    0.2%  LazyCompile: *remove node:internal/linkedlist:16:16
+      1    0.0%    0.2%  LazyCompile: *push C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:729:9
+      1    0.0%    0.2%  LazyCompile: *parse C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\commands.js:426:10
+      1    0.0%    0.2%  LazyCompile: *onwrite node:internal/streams/writable:427:17
+      1    0.0%    0.2%  LazyCompile: *onStreamRead node:internal/stream_base_commons:167:22
+      1    0.0%    0.2%  LazyCompile: *onMessage C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:157:14
+      1    0.0%    0.2%  LazyCompile: *measureAndReschedule C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\monitor.js:295:34
+      1    0.0%    0.2%  LazyCompile: *hasHooks node:internal/async_hooks:470:18
+      1    0.0%    0.2%  LazyCompile: *getValidatedString C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\deserializer.js:650:28
+      1    0.0%    0.2%  LazyCompile: *getInt32 C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:821:13
+      1    0.0%    0.2%  LazyCompile: *get node:internal/bootstrap/pre_execution:413:8
+      1    0.0%    0.2%  LazyCompile: *fromString C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:315:22
+      1    0.0%    0.2%  LazyCompile: *emit node:events:460:44
+      1    0.0%    0.2%  LazyCompile: *concat node:buffer:541:32
+      1    0.0%    0.2%  LazyCompile: *compareTopologyVersion C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\server_description.js:175:32
+      1    0.0%    0.2%  LazyCompile: *afterWriteTick node:internal/streams/writable:484:24
+      1    0.0%    0.2%  LazyCompile: *adjustOffset node:buffer:1106:22
+      1    0.0%    0.2%  LazyCompile: *TopologyDescription C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\topology_description.js:29:16
+      1    0.0%    0.2%  LazyCompile: *ObjectId.equals C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\objectid.js:179:42
+      1    0.0%    0.2%  LazyCompile: *Long.negate C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\long.js:613:38
+      1    0.0%    0.2%  LazyCompile: *BinMsg C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\commands.js:394:16
+      1    0.0%    0.2%  LazyCompile: *<anonymous> node:buffer:354:36
+      1    0.0%    0.2%  LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\server.js:61:55
+      1    0.0%    0.2%  LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\sdam\monitor.js:178:73
+      1    0.0%    0.2%  LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:61:44
+      1    0.0%    0.2%  Function: ^serializeString C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\serializer.js:19:25
+      1    0.0%    0.2%  Function: ^serialize C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\bson.js:110:19
+      1    0.0%    0.2%  Function: ^secondaryOk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\read_preference.js:164:16
+      1    0.0%    0.2%  Function: ^parse C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\commands.js:426:10
+      1    0.0%    0.2%  Function: ^parse C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:269:30
+      1    0.0%    0.2%  Function: ^onMessage C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:157:14
+      1    0.0%    0.2%  Function: ^ns C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\utils.js:293:12
+      1    0.0%    0.2%  Function: ^isUint8Array C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\utils.js:60:22
+      1    0.0%    0.2%  Function: ^isObjectLike C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\parser\utils.js:95:22
+      1    0.0%    0.2%  Function: ^handleWriteReq node:internal/stream_base_commons:45:24
+      1    0.0%    0.2%  Function: ^get hello C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongodb\lib\cmap\connection.js:75:14
+      1    0.0%    0.2%  Function: ^emitBeforeScript node:internal/async_hooks:509:26
+      1    0.0%    0.2%  Function: ^alloc node:buffer:365:30
+      1    0.0%    0.2%  Function: ^Timeout.refresh node:internal/timers:210:37
+      1    0.0%    0.2%  Function: ^ObjectId C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\objectid.js:24:22
+      1    0.0%    0.2%  Function: ^Long.eq C:\Users\Anto\Desktop\backend-coderhouse\node_modules\bson\lib\long.js:436:34
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+    389    0.1%   97.0%  JavaScript
+      0    0.0%    0.0%  C++
+     33    0.0%    8.2%  GC
+  672162   99.9%          Shared libraries
+     12    0.0%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+  666756   99.1%  C:\WINDOWS\SYSTEM32\ntdll.dll
+
