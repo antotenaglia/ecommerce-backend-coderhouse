@@ -94,12 +94,11 @@ const infoNoDebug = (req, res) => {
     depth: null,
   });
   const numCPUs = os.cpus().length;
-  const response = "Hola que tal".repeat(1000);
   const { url, method } = req;
 
   if (url && method) {
     logger.infoLogger.info(`Ruta ${method} ${url} implementada`);
-    return res.render("info", { 
+    return res.render("info-nodebug", { 
       entry: entry, 
       path: path, 
       osName: osName, 
@@ -108,7 +107,6 @@ const infoNoDebug = (req, res) => {
       projectFolder: projectFolder, 
       rss: rss, 
       numCPUs: numCPUs,
-      response: response,
     });
   } 
 };
@@ -131,7 +129,7 @@ const infoDebug = (req, res) => {
   if (url && method) {
     logger.infoLogger.info(`Ruta ${method} ${url} implementada`);
     logger.infoLogger.info(longResponseProof)
-    return res.render("info", { 
+    return res.render("info-debug", { 
       entry: entry, 
       path: path, 
       osName: osName, 

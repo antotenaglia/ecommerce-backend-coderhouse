@@ -1,217 +1,72 @@
-Statistical profiling result from info-nodebug-v8.log, (2422 ticks, 1 unaccounted, 0 excluded).
+Phase started: unnamed (index: 0, duration: 1s) 20:04:18(-0300)
 
- [Shared libraries]:
-   ticks  total  nonlib   name
-   1906   78.7%          C:\WINDOWS\SYSTEM32\ntdll.dll
-    477   19.7%          C:\Program Files\nodejs\node.exe
-      2    0.1%          C:\WINDOWS\System32\KERNEL32.DLL
-      1    0.0%          C:\WINDOWS\System32\KERNELBASE.dll
+Phase completed: unnamed (index: 0, duration: 1s) 20:04:19(-0300)
 
- [JavaScript]:
-   ticks  total  nonlib   name
-      6    0.2%   16.7%  LazyCompile: *SourceNode_walk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:221:53
-      5    0.2%   13.9%  LazyCompile: *wrap C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:101:22
-      5    0.2%   13.9%  LazyCompile: *resolve node:path:158:10
-      2    0.1%    5.6%  LazyCompile: *parse C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:269:30
-      1    0.0%    2.8%  RegExp: ^(?:\{\{(~)?#\*?)
-      1    0.0%    2.8%  RegExp: ^(?:[^\x00]*?(?=(\{\{)))
-      1    0.0%    2.8%  RegExp: \.*[\][<>]
-      1    0.0%    2.8%  RegExp: [&<>"'`=]
-      1    0.0%    2.8%  LazyCompile: *replaceStack C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:892:38
-      1    0.0%    2.8%  LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1    0.0%    2.8%  LazyCompile: *getStatsFromBinding node:internal/fs/utils:533:29
-      1    0.0%    2.8%  LazyCompile: *SourceNode_add C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:172:51
-      1    0.0%    2.8%  LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:167:47
-      1    0.0%    2.8%  Function: ^usage file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/usage.js:7:22
-      1    0.0%    2.8%  Function: ^readFileSync node:fs:459:22
-      1    0.0%    2.8%  Function: ^getMiddleware file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/middleware.js:43:18
-      1    0.0%    2.8%  Function: ^compileChildren C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:805:44
-      1    0.0%    2.8%  Function: ^append C:\Users\Anto\Desktop\backend-coderhouse\node_modules\vary\index.js:38:17
-      1    0.0%    2.8%  Function: ^YargsInstance file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:76:16
-      1    0.0%    2.8%  Function: ^ObjectDefineProperty.__proto__ node:internal/modules/esm/loader:150:5
-      1    0.0%    2.8%  Function: ^<anonymous> node:_http_outgoing:571:44
+--------------------------------------
+Metrics for period to: 20:04:20(-0300) (width: 1.425s)
+--------------------------------------
 
- [C++]:
-   ticks  total  nonlib   name
+http.codes.200: ................................................................ 108
+http.request_rate: ............................................................. 91/sec
+http.requests: ................................................................. 128
+http.response_time:
+  min: ......................................................................... 38
+  max: ......................................................................... 266
+  median: ...................................................................... 159.2
+  p95: ......................................................................... 247.2
+  p99: ......................................................................... 257.3
+http.responses: ................................................................ 108
+vusers.created: ................................................................ 20
+vusers.created_by_name.0: ...................................................... 20
 
- [Summary]:
-   ticks  total  nonlib   name
-     35    1.4%   97.2%  JavaScript
-      0    0.0%    0.0%  C++
-     25    1.0%   69.4%  GC
-   2386   98.5%          Shared libraries
-      1    0.0%          Unaccounted
 
- [C++ entry points]:
-   ticks    cpp   total   name
+--------------------------------------
+Metrics for period to: 20:04:30(-0300) (width: 7.277s)
+--------------------------------------
 
- [Bottom up (heavy) profile]:
-  Note: percentage shows a share of a particular caller in the total
-  amount of its parent calls.
-  Callers occupying less than 1.0% are not shown.
+http.codes.200: ................................................................ 892
+http.request_rate: ............................................................. 120/sec
+http.requests: ................................................................. 872
+http.response_time:
+  min: ......................................................................... 23
+  max: ......................................................................... 237
+  median: ...................................................................... 159.2
+  p95: ......................................................................... 202.4
+  p99: ......................................................................... 223.7
+http.responses: ................................................................ 892
+vusers.completed: .............................................................. 20
+vusers.failed: ................................................................. 0
+vusers.session_length:
+  min: ......................................................................... 7793.8
+  max: ......................................................................... 8166.6
+  median: ...................................................................... 8024.5
+  p95: ......................................................................... 8186.6
+  p99: ......................................................................... 8186.6
 
-   ticks parent  name
-   1906   78.7%  C:\WINDOWS\SYSTEM32\ntdll.dll
 
-    477   19.7%  C:\Program Files\nodejs\node.exe
-    307   64.4%    C:\Program Files\nodejs\node.exe
-     44   14.3%      Function: ^compileFunction node:vm:316:25
-     44  100.0%        Function: ^wrapSafe node:internal/modules/cjs/loader:1040:18
-     44  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1080:37
-     43   97.7%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1135:37
-      1    2.3%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1135:37
-     19    6.2%      Function: ^statSync node:fs:1580:18
-      9   47.4%        Function: ^default file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/escalade/sync/index.mjs:4:25
-      9  100.0%          Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1086:13
-      9  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1072:20
-      8   42.1%        Function: ^tryStat C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\view.js:174:17
-      8  100.0%          Function: ^resolve C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\view.js:146:42
-      8  100.0%            Function: ^lookup C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\view.js:104:40
-      1    5.3%        LazyCompile: ~fileExists node:internal/modules/esm/resolve:288:20
-      1  100.0%          LazyCompile: ~legacyMainResolve node:internal/modules/esm/resolve:304:27
-      1  100.0%            LazyCompile: ~packageResolve node:internal/modules/esm/resolve:892:24
-      1    5.3%        Function: ^tryStatSync node:internal/modules/esm/resolve:189:3
-      1  100.0%          Function: ^packageResolve node:internal/modules/esm/resolve:892:24
-      1  100.0%            Function: ^moduleResolve node:internal/modules/esm/resolve:985:23
-     18    5.9%      C:\Program Files\nodejs\node.exe
-      4   22.2%        LazyCompile: *argsert file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/argsert.js:4:24
-      2   50.0%          Function: ^boolean file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:168:12
-      2  100.0%            Function: ^version file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:927:12
-      1   25.0%          Function: ^version file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:927:12
-      1  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:27:12
-      1   25.0%          Function: ^addHelpOpt file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:127:15
-      1  100.0%            Function: ^help file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:141:9
-      3   16.7%        Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1321:40
-      3  100.0%          Function: ^parse file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:687:10
-      3  100.0%            Function: ^get file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:30:18
-      2   11.1%        Function: ^parse file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs-parser/build/lib/yargs-parser.js:14:10
-      2  100.0%          Function: ^yargsParser.detailed file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs-parser/build/lib/index.js:56:33
-      2  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1321:40
-      1    5.6%        LazyCompile: ~checkInvalidHeaderChar node:_http_common:231:32
-      1  100.0%          LazyCompile: ~<anonymous> node:_http_outgoing:577:45
-      1  100.0%            LazyCompile: ~setHeader node:_http_outgoing:601:57
-      1    5.6%        LazyCompile: *setupParams C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1034:36
-      1  100.0%          LazyCompile: *setupHelperArgs C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1104:44
-      1  100.0%            LazyCompile: *invokeAmbiguous C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
-      1    5.6%        Function: ~<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\mongoose\index.js:1:1
-      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1080:37
-      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1135:37
-      1    5.6%        Function: ~<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1121:11
-      1  100.0%          Function: ~<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1:1
-      1  100.0%            Function: ^Module._compile node:internal/modules/cjs/loader:1080:37
-      1    5.6%        Function: ^relative node:path:496:11
-      1  100.0%          Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1318:14
-      1  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1045:18
-      1    5.6%        Function: ^expressInit C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\middleware\init.js:29:30
-      1  100.0%          LazyCompile: *trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      1  100.0%            LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1    5.6%        Function: ^escapeExpression C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\utils.js:77:26
-      1  100.0%          Function: ^<anonymous> :1:20
-      1  100.0%            Function: ^main C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\runtime.js:207:18
-      1    5.6%        Function: ^codeClass C:\Users\Anto\Desktop\backend-coderhouse\node_modules\http-errors\index.js:38:20
-      1  100.0%          Function: ^forEachCode C:\Users\Anto\Desktop\backend-coderhouse\node_modules\http-errors\index.js:259:38
-      1  100.0%            C:\Program Files\nodejs\node.exe
-      1    5.6%        Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/parse-command.js:13:26
-      1  100.0%          C:\Program Files\nodejs\node.exe
-      1  100.0%            Function: ^parseCommand file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/parse-command.js:1:29
-     13    4.2%      Function: ^readdirSync node:fs:1435:21
-     13  100.0%        Function: ^default file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/escalade/sync/index.mjs:4:25
-     13  100.0%          Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1086:13
-     13  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1072:20
-     11    3.6%      Function: ^stat node:internal/modules/cjs/loader:151:14
-      8   72.7%        Function: ^tryFile node:internal/modules/cjs/loader:395:17
-      8  100.0%          Function: ^tryExtensions node:internal/modules/cjs/loader:411:23
-      8  100.0%            Function: ^Module._findPath node:internal/modules/cjs/loader:505:28
-      3   27.3%        Function: ^Module._findPath node:internal/modules/cjs/loader:505:28
-      3  100.0%          Function: ^Module._resolveFilename node:internal/modules/cjs/loader:865:35
-      3  100.0%            Function: ^Module._load node:internal/modules/cjs/loader:771:24
-     10    3.3%      Function: ^cpus node:os:133:14
-     10  100.0%        Function: ^infoNoDebug file:///C:/Users/Anto/Desktop/backend-coderhouse/src/controllers/index.js:85:21
-     10  100.0%          Function: ^handle C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\layer.js:86:49
-     10  100.0%            Function: ^next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\route.js:116:16
-      8    2.6%      Function: ^compileForInternalLoader node:internal/bootstrap/loaders:316:27
-      5   62.5%        Function: ^nativeModuleRequire node:internal/bootstrap/loaders:349:29
-      2   40.0%          Function: ~<anonymous> node:crypto:1:1
-      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:316:27
-      1   20.0%          Function: ~<anonymous> node:internal/modules/esm/translators:1:1
-      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:316:27
-      1   20.0%          Function: ~<anonymous> node:cluster:1:1
-      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:316:27
-      1   20.0%          Function: ~<anonymous> node:_tls_wrap:1:1
-      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:316:27
-      3   37.5%        Function: ^compileForPublicLoader node:internal/bootstrap/loaders:263:25
-      3  100.0%          Function: ^loadNativeModule node:internal/modules/cjs/helpers:44:26
-      3  100.0%            Function: ^Module._load node:internal/modules/cjs/loader:771:24
-      6    2.0%      LazyCompile: *wrap C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:101:22
-      2   33.3%        LazyCompile: *invokeAmbiguous C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
-      2  100.0%          LazyCompile: *compile C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
-      1   50.0%            LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:227:47
-      1   50.0%            Function: ^compileInput C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
-      2   33.3%        LazyCompile: *generateList C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:143:38
-      1   50.0%          LazyCompile: *setupHelperArgs C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1104:44
-      1  100.0%            LazyCompile: *invokeAmbiguous C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
-      1   50.0%          Function: ^objectLiteral C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:123:40
-      1  100.0%            Function: ^objectLiteral C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1002:40
-      1   16.7%        LazyCompile: *replaceStack C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:892:38
-      1  100.0%          Function: ^resolvePath C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:492:36
-      1  100.0%            Function: ^lookupOnContext C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:448:44
-      1   16.7%        LazyCompile: *castChunk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:52:19
-      1  100.0%          LazyCompile: *wrap C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:101:22
-      1  100.0%            LazyCompile: *invokeAmbiguous C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
-      6    2.0%      Function: ^session C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-session\index.js:179:26
-      5   83.3%        Function: ^handle C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\layer.js:86:49
-      5  100.0%          Function: ^trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      5  100.0%            LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1   16.7%        LazyCompile: *trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      1  100.0%          LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1  100.0%            Function: ^urlencodedParser C:\Users\Anto\Desktop\backend-coderhouse\node_modules\body-parser\lib\types\urlencoded.js:79:36
-      5    1.6%      Function: ^writevGeneric node:internal/stream_base_commons:122:23
-      5  100.0%        Function: ^Socket._writeGeneric node:net:848:42
-      5  100.0%          Function: ^Socket._writev node:net:880:36
-      5  100.0%            Function: ^doWrite node:internal/streams/writable:400:17
-      5    1.6%      Function: ^openSync node:fs:585:18
-      5  100.0%        Function: ^readFileSync node:fs:459:22
-      3   60.0%          Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1086:13
-      3  100.0%            Function: ^<anonymous> file:///C:/Users/Anto/Desktop/backend-coderhouse/node_modules/yargs/build/lib/yargs-factory.js:1072:20
-      1   20.0%          LazyCompile: ~Module._extensions..json node:internal/modules/cjs/loader:1185:39
-      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:992:33
-      1   20.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1135:37
-      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:992:33
-      5    1.6%      Function: ^expressInit C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\middleware\init.js:29:30
-      4   80.0%        Function: ^handle C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\layer.js:86:49
-      4  100.0%          Function: ^trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      3   75.0%            LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1   25.0%            Function: ^<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:280:64
-      1   20.0%        LazyCompile: *trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      1  100.0%          LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1  100.0%            Function: ^query C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\middleware\query.js:39:24
-      5    1.6%      Function: ^Hash node:internal/crypto/hash:62:14
-      5  100.0%        Function: ^createHash node:crypto:129:20
-      5  100.0%          Function: ^hash C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-session\index.js:596:14
-      3   60.0%            Function: ^isModified C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-session\index.js:425:24
-      2   40.0%            Function: ^generate C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-session\index.js:363:22
-      4    1.3%      LazyCompile: *SourceNode_walk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:221:53
-      3   75.0%        LazyCompile: *SourceNode_walk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:221:53
-      3  100.0%          LazyCompile: *SourceNode_walk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:221:53
-      3  100.0%            LazyCompile: *SourceNode_walk C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:221:53
-      1   25.0%        Function: ^SourceNode_toString C:\Users\Anto\Desktop\backend-coderhouse\node_modules\source-map\lib\source-node.js:318:61
-      1  100.0%          C:\Program Files\nodejs\node.exe
-      1  100.0%            LazyCompile: *compile C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
-      4    1.3%      Function: ^initialize C:\Users\Anto\Desktop\backend-coderhouse\node_modules\passport\lib\middleware\initialize.js:51:29
-      3   75.0%        Function: ^handle C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\layer.js:86:49
-      3  100.0%          Function: ^trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      2   66.7%            LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1   33.3%            Function: ^<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:280:64
-      1   25.0%        LazyCompile: *trim_prefix C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:293:23
-      1  100.0%          LazyCompile: *next C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express\lib\router\index.js:177:16
-      1  100.0%            Function: ^session C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-session\index.js:179:26
-      6    1.3%    LazyCompile: *compile C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
-      5   83.3%      LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:227:47
-      5  100.0%        LazyCompile: *step C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:31:18
-      5  100.0%          LazyCompile: *<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:30:40
-      5  100.0%            Function: ^fulfilled C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:21:27
-      1   16.7%      Function: ^compileInput C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
-      1  100.0%        Function: ^ret C:\Users\Anto\Desktop\backend-coderhouse\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:515:15
-      1  100.0%          Function: ^ExpressHandlebars._renderTemplate C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:321:60
-      1  100.0%            Function: ^<anonymous> C:\Users\Anto\Desktop\backend-coderhouse\node_modules\express-handlebars\dist\express-handlebars.js:227:47
+All VUs finished. Total time: 9 seconds
 
+--------------------------------
+Summary report @ 20:04:27(-0300)
+--------------------------------
+
+http.codes.200: ................................................................ 1000
+http.request_rate: ............................................................. 106/sec
+http.requests: ................................................................. 1000
+http.response_time:
+  min: ......................................................................... 23
+  max: ......................................................................... 266
+  median: ...................................................................... 159.2
+  p95: ......................................................................... 214.9
+  p99: ......................................................................... 237.5
+http.responses: ................................................................ 1000
+vusers.completed: .............................................................. 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.0: ...................................................... 20
+vusers.failed: ................................................................. 0
+vusers.session_length:
+  min: ......................................................................... 7793.8
+  max: ......................................................................... 8166.6
+  median: ...................................................................... 8024.5
+  p95: ......................................................................... 8186.6
+  p99: ......................................................................... 8186.6
