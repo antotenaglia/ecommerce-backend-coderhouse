@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import LocalStrategy from "passport-local";
 import { User } from "../models/user.model.js";
-import { logger } from "./logger.lib.js";
+import logger from "./logger.lib.js";
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -21,7 +21,7 @@ const loginStrategy = new LocalStrategy(async (username, password, done) => {
 
         done(null, user);
     } catch (err) {
-        logger.errorLogger.error(err);
+        logger.error(err);
         done("Error while login in", null);
     }
 });
@@ -47,7 +47,7 @@ const registerStrategy = new LocalStrategy(
         done(null, createdUser);
       
       } catch (err) {
-        logger.errorLogger.error(err);
+        logger.error(err);
         done("Error while register", null);
       }
     }

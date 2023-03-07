@@ -4,7 +4,7 @@ import yargs from "yargs";
 import util from "util";
 import { fork } from "child_process";
 import os from "os";
-import { logger } from "../lib/logger.lib.js";
+import logger from "../lib/logger.lib.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,7 +13,7 @@ const serverLogin = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     if (req.isAuthenticated()) {
       const user = req.user; 
 
@@ -27,7 +27,7 @@ const getRegister = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`);
+    logger.info(`Ruta ${method} ${url} implementada`);
     res.sendFile(join(__dirname, "../../views/register.html"));
   }
 };
@@ -36,7 +36,7 @@ const postRegister = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     const user = req.user;
     
     if (user) {
@@ -51,7 +51,7 @@ const loginFailure = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     res.render("loginError");
   }
 };
@@ -60,7 +60,7 @@ const registerFailure = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     res.render("registerError");
   }
 };
@@ -70,11 +70,11 @@ const logout = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     req.session.destroy((err) => {
       if (err) {
         res.json(err);
-        logger.errorLogger.error(err);
+        logger.error(err);
       } else {
         return res.render("logout", { username: user.username });
       }
@@ -83,63 +83,48 @@ const logout = (req, res) => {
 };
 
 const infoNoDebug = (req, res) => {
-  const entry = JSON.stringify(yargs(process.argv.slice(2)).argv);
-  const path = process.execPath; 
-  const osName = process.platform;
-  const idprocess = process.pid;
-  const version = process.version;
-  const projectFolder = process.cwd();
-  const rss = util.inspect(process.memoryUsage(), {
-    showHidden: false,
-    depth: null,
-  });
-  const numCPUs = os.cpus().length;
+  const infoNoDebug = {
+    entry : JSON.stringify(yargs(process.argv.slice(2)).argv),
+    path : process.execPath,
+    osName : process.platform,
+    idprocess : process.pid,
+    version : process.version,
+    projectFolder : process.cwd(),
+    rss : util.inspect(process.memoryUsage(), {
+      showHidden: false,
+      depth: null,
+    }),
+    numCPUs : os.cpus().length
+  };
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`);
-    return res.render("info-nodebug", { 
-      entry: entry, 
-      path: path, 
-      osName: osName, 
-      idprocess: idprocess, 
-      version: version, 
-      projectFolder: projectFolder, 
-      rss: rss, 
-      numCPUs: numCPUs,
-    });
+    logger.info(`Ruta ${method} ${url} implementada`);
+    return res.render("info-nodebug", { infoNoDebug: infoNoDebug });
   } 
 };
 
 const infoDebug = (req, res) => {
-  const entry = JSON.stringify(yargs(process.argv.slice(2)).argv);
-  const path = process.execPath; 
-  const osName = process.platform;
-  const idprocess = process.pid;
-  const version = process.version;
-  const projectFolder = process.cwd();
-  const rss = util.inspect(process.memoryUsage(), {
-    showHidden: false,
-    depth: null,
-  });
-  const numCPUs = os.cpus().length;
-  const longResponseProof = "Hola que tal".repeat(1000);
+  const infoDebug = {
+    entry : JSON.stringify(yargs(process.argv.slice(2)).argv),
+    path : process.execPath,
+    osName : process.platform,
+    idprocess : process.pid,
+    version : process.version,
+    projectFolder : process.cwd(),
+    rss : util.inspect(process.memoryUsage(), {
+      showHidden: false,
+      depth: null,
+    }),
+    numCPUs : os.cpus().length,
+    longResponseProof : "Hola que tal".repeat(1000)
+  };
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`);
-    logger.infoLogger.info(longResponseProof)
-    return res.render("info-debug", { 
-      entry: entry, 
-      path: path, 
-      osName: osName, 
-      idprocess: idprocess, 
-      version: version, 
-      projectFolder: projectFolder, 
-      rss: rss, 
-      numCPUs: numCPUs,
-      longResponseProof: longResponseProof,
-    });
+    logger.info(`Ruta ${method} ${url} implementada`);
+    logger.info(infoDebug.longResponseProof)
+    return res.render("info-debug", { infoDebug: infoDebug })
   } 
 };
 
@@ -150,7 +135,7 @@ const randoms = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
-    logger.infoLogger.info(`Ruta ${method} ${url} implementada`)
+    logger.info(`Ruta ${method} ${url} implementada`)
     child.send(quantity);
 
     child.on("message", (response) => {
@@ -162,7 +147,7 @@ const randoms = (req, res) => {
 const warn = (req, res) => {
   const { url, method } = req;
 
-  logger.warnLogger.warn(`Ruta ${method} ${url} no implementada`);
+  logger.warn(`Ruta ${method} ${url} no implementada`);
   res.send(`Ruta ${method} ${url} no está implementada`);
 }
 

@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 import yargs from "yargs";
 import cluster from "cluster";
 import os from "os";
-import { logger } from "./lib/logger.lib.js";
+import logger from "./lib/logger.lib.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -107,10 +107,10 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   mongoose.connect(config.mongoUrl);
 
   const connectedServer = app.listen(args.port, () => {
-    logger.infoLogger.info(`Servidor HTTP escuchando en el puerto ${connectedServer.address().port}`);
+    logger.info(`Servidor HTTP escuchando en el puerto ${connectedServer.address().port}`);
   });
   connectedServer.on("error", (error) =>
-    logger.infoError.error(`Error en el servidor: ${error}`)
+    logger.error(`Error en el servidor: ${error}`)
   );
 }
 
