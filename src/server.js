@@ -106,8 +106,8 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   //se crea db para los usuarios registrados
   mongoose.connect(config.mongoUrl);
 
-  const connectedServer = app.listen(args.port, () => {
-    logger.info(`Servidor HTTP escuchando en el puerto ${connectedServer.address().port}`);
+  const connectedServer = app.listen(process.env.PORT, () => {
+    logger.info(`Servidor HTTP escuchando en el puerto ${process.env.PORT}`);
   });
   connectedServer.on("error", (error) =>
     logger.error(`Error en el servidor: ${error}`)

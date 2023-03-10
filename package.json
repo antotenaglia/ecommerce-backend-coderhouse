@@ -1,8 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node src/benchmark.js",
-    "start": "0x src/server.js"
+    "start": "nodemon ./src/server.js"
   },
   "dependencies": {
     "@types/node": "^18.14.0",
