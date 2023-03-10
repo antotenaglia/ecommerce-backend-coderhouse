@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node ./src/server.js --m FORK"
+    "start": "node ./src/server.js --m CLUSTER"
   },
 
   "dependencies": {
