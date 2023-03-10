@@ -1,8 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "start": "nodemon ./src/server.js"
+    "start": "node ./src/server.js"
   },
+
   "dependencies": {
     "@types/node": "^18.14.0",
     "autocannon": "^7.10.0",
