@@ -107,7 +107,11 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   mongoose.connect(config.mongoUrl);
 
   const connectedServer = app.listen(process.env.PORT || 3000, () => {
-    logger.info(`Servidor HTTP escuchando en el puerto ${process.env.PORT}`);
+    if (process.env.PORT) {
+      logger.info(`Servidor HTTP escuchando en el puerto ${process.env.PORT}`);
+    } else {
+      logger.info("Servidor HTTP escuchando en el puerto 3000");
+    }  
   });
   connectedServer.on("error", (error) =>
     logger.error(`Error en el servidor: ${error}`)
