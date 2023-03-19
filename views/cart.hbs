@@ -1,0 +1,35 @@
+<div>
+    <h2>BIENVENIDO/A: {{username}}</h2> 
+    <form action="/logout" method="get">
+        <input type="submit" value="Cerrar sesión">
+    </form> 
+    <br/>
+    <h2>DATOS PERSONALES:</h2>
+    <h3>Nombre: {{firstname}}</h3>
+    <h3>Apellido: {{lastname}}</h3>
+    <h3>Tel: {{phone}}</h3>
+    <h3>Dirección: {{address}}</h3>
+    <h3>Edad: {{age}}</h3>
+    <img style="width: 100px" src="{{photo}}" alt="photo"> 
+    <br/>
+    <br/>
+    <h2>MI CARRITO DE COMPRAS:</h2>
+    {{!-- <ul>
+        {{#if cart.products.length}}
+        {{#each cart.products}}
+        <h2>{{this.title}}</h2>
+        <img src="{{this.thumbnail}}" alt="" width="100">
+        <p>{{this.price}}</p>
+        {{/each}}
+        {{/if}}
+    </ul> --}}
+</div>
+<script>
+    function login() {
+        location.href = '/login'
+    }
+
+    setTimeout(login, 60000)
+</script>
+
+

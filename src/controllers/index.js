@@ -5,20 +5,40 @@ import util from "util";
 import { fork } from "child_process";
 import os from "os";
 import logger from "../lib/logger.lib.js";
+import { User } from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import sendMail from "../nodemailer.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const serverLogin = (req, res) => {
+const hashPassword = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+
+
+const getLogin = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
     logger.info(`Ruta ${method} ${url} implementada`)
+    
     if (req.isAuthenticated()) {
       const user = req.user; 
 
-      return res.render("welcome", { username: user.username });
+      return res.render("cart", 
+        {
+          username: user.username,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          address: user.address,
+          age: user.age,
+          phone: user.phone,
+          photo: user.photo,
+        }
+      );
     }
+
     res.sendFile(join(__dirname, "../../views/login.html"));
   }
 };
@@ -32,22 +52,41 @@ const getRegister = (req, res) => {
   }
 };
 
-const postRegister = (req, res) => {
-  const { url, method } = req;
+const postRegister = async (req, res) => {
 
-  if (url && method) {
-    logger.info(`Ruta ${method} ${url} implementada`)
-    const user = req.user;
-    
-    if (user) {
-      return res.render("welcome", { username: user.username });
+  try {
+    const existingUser = await User.findOne({ username: req.body.username });
+
+    if (existingUser) {
+      return res.render("registerError");
     } 
 
+    const newUser = {
+      username: req.body.username,
+      password: hashPassword(req.body.password),
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      address: req.body.address,
+      age: req.body.age,
+      phone: req.body.phone,
+      photo: `http://localhost:3000/images/${req.file.filename}`,
+    };
+
+    const createdUser = await User.create(newUser);
+    
+    sendMail(createdUser);
+
+    //await Cart.create({ username, products: [] });
+
+    return res.render("cart", newUser);
+  
+  } catch (err) {
+    logger.error(err);
     return res.render("registerError");
   }
 };
 
-const loginFailure = (req, res) => {
+const getLoginFailure = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
@@ -56,7 +95,7 @@ const loginFailure = (req, res) => {
   }
 };
 
-const registerFailure = (req, res) => {
+const getRegisterFailure = (req, res) => {
   const { url, method } = req;
 
   if (url && method) {
@@ -65,7 +104,7 @@ const registerFailure = (req, res) => {
   }
 };
 
-const logout = (req, res) => {
+const getLogout = (req, res) => {
   const user = req.user;
   const { url, method } = req;
 
@@ -82,7 +121,7 @@ const logout = (req, res) => {
   }
 };
 
-const infoNoDebug = (req, res) => {
+const getInfoNoDebug = (req, res) => {
   const infoNoDebug = {
     entry : JSON.stringify(yargs(process.argv.slice(2)).argv),
     path : process.execPath,
@@ -104,31 +143,7 @@ const infoNoDebug = (req, res) => {
   } 
 };
 
-const infoDebug = (req, res) => {
-  const infoDebug = {
-    entry : JSON.stringify(yargs(process.argv.slice(2)).argv),
-    path : process.execPath,
-    osName : process.platform,
-    idprocess : process.pid,
-    version : process.version,
-    projectFolder : process.cwd(),
-    rss : util.inspect(process.memoryUsage(), {
-      showHidden: false,
-      depth: null,
-    }),
-    numCPUs : os.cpus().length,
-    longResponseProof : "Hola que tal".repeat(1000)
-  };
-  const { url, method } = req;
-
-  if (url && method) {
-    logger.info(`Ruta ${method} ${url} implementada`);
-    logger.info(infoDebug.longResponseProof)
-    return res.render("info-debug", { infoDebug: infoDebug })
-  } 
-};
-
-const randoms = (req, res) => {
+const getRandoms = (req, res) => {
   const { cant } = req.query;
   const child = fork(join(__dirname, "../child.js")) 
   const quantity = cant ? cant : 100000000;
@@ -144,7 +159,7 @@ const randoms = (req, res) => {
   }
 };
 
-const warn = (req, res) => {
+const getWarn = (req, res) => {
   const { url, method } = req;
 
   logger.warn(`Ruta ${method} ${url} no implementada`);
@@ -152,16 +167,15 @@ const warn = (req, res) => {
 }
 
 export const controller = {
-    serverLogin,
+    getLogin,
     getRegister,
     postRegister,
-    loginFailure,
-    registerFailure,
-    logout,
-    infoDebug,
-    infoNoDebug,
-    randoms,
-    warn,
+    getLoginFailure,
+    getRegisterFailure,
+    getLogout,
+    getInfoNoDebug,
+    getRandoms,
+    getWarn,
 };
 
 

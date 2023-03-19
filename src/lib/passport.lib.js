@@ -3,10 +3,6 @@ import LocalStrategy from "passport-local";
 import { User } from "../models/user.model.js";
 import logger from "./logger.lib.js";
 
-const hashPassword = (password) => {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-};
-
 const validatePassword = (plainPassword, hashedPassword) => {
   return bcrypt.compareSync(plainPassword, hashedPassword);
 };
@@ -26,31 +22,4 @@ const loginStrategy = new LocalStrategy(async (username, password, done) => {
     }
 });
 
-const registerStrategy = new LocalStrategy(
-    { passReqToCallback: true },
-    async (req, username, password, done) => {
-      try {
-        const existingUser = await User.findOne({ username: username });
-  
-        if (existingUser) {
-         return done(null, null);
-        } 
-  
-        const newUser = {
-          username,
-          password: hashPassword(password)
-        };
-        const createdUser = await User.create(newUser);
-  
-        req.user = createdUser;
-  
-        done(null, createdUser);
-      
-      } catch (err) {
-        logger.error(err);
-        done("Error while register", null);
-      }
-    }
-  );
-
-export const passportStrategies = { loginStrategy, registerStrategy };
+export const passportStrategies = { loginStrategy };

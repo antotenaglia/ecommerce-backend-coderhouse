@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
   </head>
   <body>
     <h1>Registro de Usuario</h1>
-    <form id="registerForm" action="/register" method="post">
-        <input id="registerNameInput" type="text" placeholder="Email" name="username"> <br/> <br/>
-        <input id="registerPasswordInput" type="password" placeholder="Contraseña" name="password"> <br/> <br/>
-        <input type="submit" value="Registrarse"> <br/> <br/> 
+    <form id="registerForm" action="/register" enctype= "multipart/form-data" method="post"><br><br>
+      <input id="registerEmailInput" type="text" placeholder="Email" name="username"><br><br>
+      <input id="registerPasswordInput" type="password" placeholder="Contraseña" name="password"><br><br>
+      <input id="registerFirstnameInput" type="text" placeholder="Nombre" name="firstname"><br><br>
+      <input id="registerLastnameInput" type="text" placeholder="Apellido" name="lastname"><br><br>
+      <input id="registerAddressInput" type="text" placeholder="Dirección" name="address"><br><br>
+      <input id="registerAgeInput" type="number" placeholder="Edad" name="age"><br><br>
+      <input id="registerPhoneInput" type="tel" placeholder="Teléfono" name="phone"><br><br>
+      <input id="registerPhotoInput" type="file" name="photo"><br><br>
+      <input type="submit" value="Registrarse"><br><br>
     </form>
     <form action="/login" method="get">
       <input type="submit" value="Ir a login"> <br/> <br/> 

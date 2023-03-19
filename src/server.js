@@ -14,6 +14,7 @@ import yargs from "yargs";
 import cluster from "cluster";
 import os from "os";
 import logger from "./lib/logger.lib.js";
+import path from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -55,6 +56,9 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   
   app.use(json());
   app.use(urlencoded({ extended: true }));
+
+  //se accede a archivos estáticos a través de la carpeta uploads
+  app.use("/images", express.static(path.join(__dirname + "/uploads")))
   
   //se persisten las sesiones en mongo Atlas
   app.use(
@@ -88,7 +92,7 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   app.use(passport.session());
   
   passport.use("login", passportStrategies.loginStrategy);
-  passport.use("register", passportStrategies.registerStrategy);
+  //passport.use("register", passportStrategies.registerStrategy);
   
   passport.serializeUser((user, done) => {
     done(null, user._id);
@@ -100,7 +104,7 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     done(null, user);
   });
   
-  //se define que la ruta "/" use routes
+  //se define que la ruta "/" use router
   app.use("/", router);
   
   //se crea db para los usuarios registrados
