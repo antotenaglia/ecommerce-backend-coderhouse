@@ -11,7 +11,7 @@ const transporter = createTransport({
     }
 });
 
-const sendMail = async ({username, firstname, lastname, address, age, phone}) => {
+const sendMailNewRegister = async ({username, firstname, lastname, address, age, phone}) => {
     try {
         const mailOptions = {
             from: "Servidor Node",
@@ -31,4 +31,25 @@ const sendMail = async ({username, firstname, lastname, address, age, phone}) =>
     }
 }
 
-export default sendMail;
+const sendMailNewOrder = async ({username, products}) => {
+    try {
+        const mailOptions = {
+            from: "Servidor Node",
+            to: config.etherealMail, 
+            subject: `Nuevo pedido de ${username}`,
+            html: `<h3 style="color: blue;">Usuario: ${username}</h3>
+            <h3 style="color: blue;">Pedido:</h3>
+            <script>
+                for (let i = 0; i < ${products}.length; i++) {
+                    <h3>${products.title[i]}</h3>
+                }
+           </script>`,
+        };
+        const info = await transporter.sendMail(mailOptions);
+        logger.info(info);
+    } catch (err) {
+        logger.error(err);
+    }
+}
+
+export const sendMail = { sendMailNewRegister, sendMailNewOrder };

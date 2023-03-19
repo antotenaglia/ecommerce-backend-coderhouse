@@ -7,7 +7,11 @@ import os from "os";
 import logger from "../lib/logger.lib.js";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
-import sendMail from "../nodemailer.js";
+import { sendMail } from "../nodemailer.js";
+import productsContainer from "../container/products.container.js";
+import cartsContainer from "../container/cart.container.js";
+import * as fs from 'fs';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,6 +20,14 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 
+const getIndex = (req, res) => {
+  const { url, method } = req;
+
+  if (url && method) {
+    logger.info(`Ruta ${method} ${url} implementada`);
+    res.sendFile(join(__dirname, "../../views/index.html"));
+  };
+};
 
 const getLogin = (req, res) => {
   const { url, method } = req;
@@ -26,7 +38,7 @@ const getLogin = (req, res) => {
     if (req.isAuthenticated()) {
       const user = req.user; 
 
-      return res.render("cart", 
+      return res.render("home", 
         {
           username: user.username,
           firstname: user.firstname,
@@ -49,7 +61,7 @@ const getRegister = (req, res) => {
   if (url && method) {
     logger.info(`Ruta ${method} ${url} implementada`);
     res.sendFile(join(__dirname, "../../views/register.html"));
-  }
+  };
 };
 
 const postRegister = async (req, res) => {
@@ -74,15 +86,17 @@ const postRegister = async (req, res) => {
 
     const createdUser = await User.create(newUser);
     
-    sendMail(createdUser);
+    sendMail.sendMailNewRegister(createdUser);
 
-    //await Cart.create({ username, products: [] });
-
-    return res.render("cart", newUser);
+    const cart = {username: newUser.username, products: []};
+    console.log("holaaaaaaaaaaaaa",cart)
+    await fs.promises.writeFile('carts.txt', JSON.stringify(cart, null, 2));
+    
+    return res.render("home", createdUser);
   
   } catch (err) {
     logger.error(err);
-    return res.render("registerError");
+    return res.json("error while register", err);
   }
 };
 
@@ -101,6 +115,63 @@ const getRegisterFailure = (req, res) => {
   if (url && method) {
     logger.info(`Ruta ${method} ${url} implementada`)
     res.render("registerError");
+  }
+};
+
+const getProducts = async (req, res) => {
+  const { url, method } = req;
+  const products = new productsContainer(join(__dirname, "../../products.txt")); 
+  let productsList = await products.getAllProducts(); 
+  
+  if (url && method) {
+      logger.info(`Ruta ${method} ${url} implementada`);
+      
+      return res.render("products", {productsList});
+  }
+};
+
+const getCart = async (req, res) => {
+  const { url, method } = req;
+  const cart = new cartsContainer(join(__dirname, "../../carts.txt")); 
+  let cartList = await cart.getCart(); 
+  console.log(cartList)
+
+  if (url && method) {
+      logger.info(`Ruta ${method} ${url} implementada`);
+      if (cartList.products.length) {
+        return res.render("cart", {cartList});
+      } else {
+        return res.render("cartError");
+      }    
+  }
+};
+
+const postCart = async (req, res) => {
+  const { url, method } = req;
+  const cart = new cartsContainer(join(__dirname, "../../carts.txt"));
+
+  if (url && method) {
+    logger.info(`Ruta ${method} ${url} implementada`);
+    const product = req.body;
+
+    await cart.addProductToCart(product) 
+  }
+};
+
+const getCartPurchase = async (req, res) => {
+  const cart = new cartsContainer(join(__dirname, "../../carts.txt"));
+  const { url, method } = req;
+
+  if (url && method) {
+      logger.info(`Ruta ${method} ${url} implementada`);
+      
+      if (cart.products.length) {
+        sendMail.sendMailNewOrder(cart);
+
+        return res.render("cartPurchase");
+      } else {
+        return res.render("cartError");
+      }
   }
 };
 
@@ -167,11 +238,16 @@ const getWarn = (req, res) => {
 }
 
 export const controller = {
+    getIndex,  
     getLogin,
     getRegister,
     postRegister,
     getLoginFailure,
     getRegisterFailure,
+    getProducts,
+    getCart,
+    postCart,
+    getCartPurchase,
     getLogout,
     getInfoNoDebug,
     getRandoms,

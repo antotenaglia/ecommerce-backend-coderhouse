@@ -7,6 +7,10 @@ import uploadFileMiddleware from "../lib/multer.lib.js";
 const router = Router();
 
 router
+    .route("/")
+    .get(controller.getIndex)
+
+router
     .route("/login")
     .get(controller.getLogin)
     .post(passport.authenticate("login", { failureRedirect: "/fail-login" }), uploadFileMiddleware.single("photo"), controller.getLogin);  
@@ -14,7 +18,7 @@ router
 router
     .route("/register")
     .get(controller.getRegister)
-    //.post(passport.authenticate("register", { failureRedirect: "/fail-register" }), controller.postRegister);   se está haciendo el fail-register?
+    //.post(passport.authenticate("register", { failureRedirect: "/fail-register" }), controller.postRegister);   
     .post(uploadFileMiddleware.single("photo"), controller.postRegister);
 
 router
@@ -24,6 +28,19 @@ router
 router
     .route("/fail-register")
     .get(controller.getRegisterFailure);
+
+router
+    .route("/products")
+    .get(controller.getProducts);
+
+router
+    .route("/cart")
+    .get(controller.getCart)
+    .post(controller.postCart);
+
+router
+    .route("/cart/purchase")
+    .get(controller.getCartPurchase);
 
 router
     .route("/logout")

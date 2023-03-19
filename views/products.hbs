@@ -1,0 +1,17 @@
+<div>
+    <h2>LISTADO DE PRODUCTOS</h2>
+    <ul>
+        {{#each productsList}}
+            <h2>{{this.title}}</h2>
+            <img src="{{this.thumbnail}}" alt="productImage" width="100px">
+            <p>PRECIO: ${{this.price}}</p>
+            <form action="/cart" method="post">
+                <input type="submit" value="Agregar al carrito"> <br/> <br/> 
+            </form>
+        {{/each}}
+    </ul>
+    
+</div>
+
+
+
