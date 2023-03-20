@@ -1,4 +1,9 @@
 <div>
+    <h2>MI CARRITO DE COMPRAS</h2>
+    <form action="/cart" method="get">
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="submit" value="Ver carrito"> <br/> <br/> 
+    </form>
     <h2>LISTADO DE PRODUCTOS</h2>
     <ul>
         {{#each productsList}}

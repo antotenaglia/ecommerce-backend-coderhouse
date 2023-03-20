@@ -132,19 +132,19 @@ const getProducts = async (req, res) => {
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
       
-      return res.render("products", {productsList});
+      return res.render("products", {productsList, username});
   }
 };
 
 const getCart = async (req, res) => {
   const { url, method } = req;
-  const cart = new cartsContainer(join(__dirname, "../../carts.txt")); 
-  let cartList = await cart.getCart(); 
-
+  const username = req.query.username;
+  const cart = await Cart.findOne({ username: req.query.username });
+  
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
-      if (cartList.products.length) {
-        return res.render("cart", {cartList});
+      if (cart) {
+        return res.render("cart", {cart, username});
       } else {
         return res.render("cartError");
       }    
@@ -152,24 +152,21 @@ const getCart = async (req, res) => {
 };
 
 const postCart = async (req, res) => {
+  //const username = req.query.username;
+  
   try {
-
     const newProduct = {
       title: req.body.title,
       price: req.body.price,
       thumbnail: req.body.thumbnail
     };
-
     const existingCart = await Cart.findOne({ username: req.body.username });
 
     if (existingCart) {
-
       existingCart.products.push(newProduct);
 
       await Cart.findByIdAndUpdate(existingCart._id, {products: existingCart.products});
-     
     } else {
-
       const newCart ={
         username: req.body.username,
         products: []
@@ -178,34 +175,35 @@ const postCart = async (req, res) => {
       newCart.products.push(newProduct);
 
       await Cart.create(newCart);
-
     }
 
-    const products = new productsContainer(join(__dirname, "../../products.txt")); 
-      
-    let productsList = await products.getAllProducts();
+    // const products = new productsContainer(join(__dirname, "../../products.txt")); 
+    // let productsList = await products.getAllProducts();
 
-    res.render("products", {productsList});
-  
+    // res.render("products", {productsList, username});
+
+    res.sendStatus(200);
+
   } catch (err) {
     logger.error(err);
+
     res.sendStatus(500);
   }
 };
 
 const getCartPurchase = async (req, res) => {
-  const cart = new cartsContainer(join(__dirname, "../../carts.txt"));
   const { url, method } = req;
-
+  const username = req.query.username;
+  const cart = await Cart.findOne({ username: req.query.username });
+  const cartLength = cart.products.length;
+  
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
       
-      if (cart.products.length) {
-        sendMail.sendMailNewOrder(cart);
+      if (cart) {
+        sendMail.sendMailNewOrder(cart, username);
 
-        return res.render("cartPurchase");
-      } else {
-        return res.render("cartError");
+        return res.render("cartPurchase", {username});
       }
   }
 };

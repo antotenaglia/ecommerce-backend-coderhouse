@@ -31,18 +31,23 @@ const sendMailNewRegister = async ({username, firstname, lastname, address, age,
     }
 }
 
-const sendMailNewOrder = async ({username, products}) => {
+const sendMailNewOrder = async (cart, username) => {
     try {
+        
         const mailOptions = {
             from: "Servidor Node",
             to: config.etherealMail, 
             subject: `Nuevo pedido de ${username}`,
             html: `<h3 style="color: blue;">Usuario: ${username}</h3>
             <h3 style="color: blue;">Pedido:</h3>
+            <div id="myHTML"></div>
             <script>
-                for (let i = 0; i < ${products}.length; i++) {
-                    <h3>${products.title[i]}</h3>
+                const HTML = document.getElementById("myHTML");
+                const title = '';
+                for (let i = 0; i < ${cart.products.length}; i++) {
+                    title += "<h3>${cart.products["i"].title}</h3><br/>" 
                 }
+                HTML.innerHTML = title
            </script>`,
         };
         const info = await transporter.sendMail(mailOptions);
