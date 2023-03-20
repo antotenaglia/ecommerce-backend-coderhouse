@@ -15,9 +15,19 @@
     <br/>
     <div>
       <ul>
-          <li><a href="/products">Ver productos</a></li>
+        <li>
+            <form action="/products" method="get">
+                <input type="hidden" name="username" value="{{username}}">
+                <input type="submit" value="Ver productos"> <br/> <br/> 
+            </form>
+        </li>
+        <li>
+            <form action="/cart" method="get">
+                <input type="hidden" name="username" value="{{username}}">
+                <input type="submit" value="Ver carrito"> <br/> <br/> 
+            </form>
+        </li>
           <li><a href="product-loading.html">Ingresar productos</a></li>
-          <li><a href="/cart">Ver carrito</a></li>
       </ul>
     </div>
 </div>

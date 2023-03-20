@@ -1,8 +1,8 @@
-// import { model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 
-// const cartSchema = new Schema({
-//   username: String,
-//   products: Array,
-// });
+const cartSchema = new Schema({
+   username: String,
+   products: Array,
+ });
 
-// export const Cart = model("Cart", cartSchema);
+export const Cart = model("Cart", cartSchema);

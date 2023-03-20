@@ -1,10 +1,10 @@
-// import { model, Schema } from "mongoose";
+ import { model, Schema } from "mongoose";
 
-// const productSchema = new Schema({
-//   title: String,
-//   price: Number,
-//   stock: Number,
-//   thumbnail: String,
-// });
+ const productSchema = new Schema({
+   title: String,
+   price: Number,
+   stock: Number,
+   thumbnail: String,
+});
 
-// export const Product = model("Product", productSchema);
+export const Product = model("Product", productSchema);

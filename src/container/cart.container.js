@@ -16,24 +16,9 @@ class cartsContainer {
         }
     }
 
-    // async createCart() {
-    //     try {
-    //         const carts = [];
-    //         const cart = {
-    //             //username
-    //             products: []
-    //         }
-    //         carts.push(cart);
-    //         fs.writeFileSync(this.filename, JSON.stringify(carts))
-    //     } catch (error) {
-    //         console.log("ERROR:", error)
-    //         return [];
-    //     }
-    // }
-
     async addProductToCart(product) {
         try {
-            const cart = await this.getCart()
+            const cart = await this.getCart();
             //const { id } = req.params;
             //const { id_prod } = req.body;
             //const cart = carts.find((cart) => cart.id === Number(id)); 

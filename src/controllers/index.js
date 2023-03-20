@@ -6,6 +6,7 @@ import { fork } from "child_process";
 import os from "os";
 import logger from "../lib/logger.lib.js";
 import { User } from "../models/user.model.js";
+import { Cart } from "../models/cart.model.js";
 import bcrypt from "bcrypt";
 import { sendMail } from "../nodemailer.js";
 import productsContainer from "../container/products.container.js";
@@ -88,9 +89,9 @@ const postRegister = async (req, res) => {
     
     sendMail.sendMailNewRegister(createdUser);
 
-    const cart = {username: newUser.username, products: []};
-    console.log("holaaaaaaaaaaaaa",cart)
-    await fs.promises.writeFile('carts.txt', JSON.stringify(cart, null, 2));
+    //const cart = {username: newUser.username, products: []};
+
+    //await fs.promises.writeFile('carts.txt', JSON.stringify(cart, null, 2));
     
     return res.render("home", createdUser);
   
@@ -120,8 +121,13 @@ const getRegisterFailure = (req, res) => {
 
 const getProducts = async (req, res) => {
   const { url, method } = req;
+  const username = req.query.username;
   const products = new productsContainer(join(__dirname, "../../products.txt")); 
-  let productsList = await products.getAllProducts(); 
+  let productsList = await products.getAllProducts();
+  
+  productsList.forEach(element => {
+    element.username = username;
+  });
   
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
@@ -134,7 +140,6 @@ const getCart = async (req, res) => {
   const { url, method } = req;
   const cart = new cartsContainer(join(__dirname, "../../carts.txt")); 
   let cartList = await cart.getCart(); 
-  console.log(cartList)
 
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
@@ -147,14 +152,44 @@ const getCart = async (req, res) => {
 };
 
 const postCart = async (req, res) => {
-  const { url, method } = req;
-  const cart = new cartsContainer(join(__dirname, "../../carts.txt"));
+  try {
 
-  if (url && method) {
-    logger.info(`Ruta ${method} ${url} implementada`);
-    const product = req.body;
+    const newProduct = {
+      title: req.body.title,
+      price: req.body.price,
+      thumbnail: req.body.thumbnail
+    };
 
-    await cart.addProductToCart(product) 
+    const existingCart = await Cart.findOne({ username: req.body.username });
+
+    if (existingCart) {
+
+      existingCart.products.push(newProduct);
+
+      await Cart.findByIdAndUpdate(existingCart._id, {products: existingCart.products});
+     
+    } else {
+
+      const newCart ={
+        username: req.body.username,
+        products: []
+      }
+
+      newCart.products.push(newProduct);
+
+      await Cart.create(newCart);
+
+    }
+
+    const products = new productsContainer(join(__dirname, "../../products.txt")); 
+      
+    let productsList = await products.getAllProducts();
+
+    res.render("products", {productsList});
+  
+  } catch (err) {
+    logger.error(err);
+    res.sendStatus(500);
   }
 };
 
