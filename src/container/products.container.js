@@ -14,7 +14,7 @@ class productsContainer {
             console.log("ERROR:", error)
             return [];
         }
-    }
+    }  
 }
 
 export default productsContainer;
