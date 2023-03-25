@@ -10,9 +10,6 @@ import { Cart } from "../models/cart.model.js";
 import bcrypt from "bcrypt";
 import { sendMail } from "../nodemailer.js";
 import productsContainer from "../container/products.container.js";
-import cartsContainer from "../container/cart.container.js";
-import * as fs from 'fs';
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -136,6 +133,17 @@ const getProducts = async (req, res) => {
   }
 };
 
+const loadingProducts = async (req, res) => {
+  const { url, method } = req;
+  const username = req.query.username;
+    
+  if (url && method) {
+      logger.info(`Ruta ${method} ${url} implementada`);
+      
+      return res.render("productsLoading", {username});
+  }
+};
+
 const getCart = async (req, res) => {
   const { url, method } = req;
   const username = req.query.username;
@@ -152,12 +160,12 @@ const getCart = async (req, res) => {
 };
 
 const postCart = async (req, res) => {
-  //const username = req.query.username;
-  
   try {
     const newProduct = {
+      id: req.body.id,
       title: req.body.title,
       price: req.body.price,
+      stock: req.body.stock,
       thumbnail: req.body.thumbnail
     };
     const existingCart = await Cart.findOne({ username: req.body.username });
@@ -177,11 +185,6 @@ const postCart = async (req, res) => {
       await Cart.create(newCart);
     }
 
-    // const products = new productsContainer(join(__dirname, "../../products.txt")); 
-    // let productsList = await products.getAllProducts();
-
-    // res.render("products", {productsList, username});
-
     res.sendStatus(200);
 
   } catch (err) {
@@ -195,7 +198,6 @@ const getCartPurchase = async (req, res) => {
   const { url, method } = req;
   const username = req.query.username;
   const cart = await Cart.findOne({ username: req.query.username });
-  const cartLength = cart.products.length;
   
   if (url && method) {
       logger.info(`Ruta ${method} ${url} implementada`);
@@ -225,44 +227,6 @@ const getLogout = (req, res) => {
   }
 };
 
-const getInfoNoDebug = (req, res) => {
-  const infoNoDebug = {
-    entry : JSON.stringify(yargs(process.argv.slice(2)).argv),
-    path : process.execPath,
-    osName : process.platform,
-    idprocess : process.pid,
-    version : process.version,
-    projectFolder : process.cwd(),
-    rss : util.inspect(process.memoryUsage(), {
-      showHidden: false,
-      depth: null,
-    }),
-    numCPUs : os.cpus().length
-  };
-  const { url, method } = req;
-
-  if (url && method) {
-    logger.info(`Ruta ${method} ${url} implementada`);
-    return res.render("info-nodebug", { infoNoDebug: infoNoDebug });
-  } 
-};
-
-const getRandoms = (req, res) => {
-  const { cant } = req.query;
-  const child = fork(join(__dirname, "../child.js")) 
-  const quantity = cant ? cant : 100000000;
-  const { url, method } = req;
-
-  if (url && method) {
-    logger.info(`Ruta ${method} ${url} implementada`)
-    child.send(quantity);
-
-    child.on("message", (response) => {
-      return res.render("random", { random: JSON.stringify(response) });
-    })
-  }
-};
-
 const getWarn = (req, res) => {
   const { url, method } = req;
 
@@ -278,12 +242,11 @@ export const controller = {
     getLoginFailure,
     getRegisterFailure,
     getProducts,
+    loadingProducts,
     getCart,
     postCart,
     getCartPurchase,
     getLogout,
-    getInfoNoDebug,
-    getRandoms,
     getWarn,
 };
 

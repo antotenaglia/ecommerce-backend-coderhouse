@@ -11,8 +11,10 @@
             <img src="{{this.thumbnail}}" alt="productImage" width="100px">
             <p>PRECIO: ${{this.price}}</p>
             <form action="/cart" method="post">
+                <input type="hidden" name="id" value="{{this.id}}">
                 <input type="hidden" name="title" value="{{this.title}}">
                 <input type="hidden" name="price" value="{{this.price}}">
+                <input type="hidden" name="stock" value="{{this.stock}}">
                 <input type="hidden" name="thumbnail" value="{{this.thumbnail}}">
                 <input type="hidden" name="username" value="{{this.username}}">
                 <input type="submit" value="Agregar al carrito"> <br/> <br/> 

@@ -3,6 +3,7 @@ import { controller } from "../controllers/index.js";
 import passport from "passport";
 import compression from "compression";
 import uploadFileMiddleware from "../lib/multer.lib.js";
+import isAdmin from "../middleware/admin.mddleware.js";
 
 const router = Router();
 
@@ -18,7 +19,6 @@ router
 router
     .route("/register")
     .get(controller.getRegister)
-    //.post(passport.authenticate("register", { failureRedirect: "/fail-register" }), controller.postRegister);   
     .post(uploadFileMiddleware.single("photo"), controller.postRegister);
 
 router
@@ -34,6 +34,10 @@ router
     .get(controller.getProducts);
 
 router
+    .route("/product-loading")
+    .get(isAdmin, controller.loadingProducts);
+
+router
     .route("/cart")
     .get(controller.getCart)
     .post(controller.postCart);
@@ -45,14 +49,6 @@ router
 router
     .route("/logout")
     .get(controller.getLogout);
-
-router
-    .route("/info-nodebug")
-    .get(compression(), controller.getInfoNoDebug);
-
-router
-    .route("/api/randoms")
-    .get(controller.getRandoms);
 
 router
     .route("*")
