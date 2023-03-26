@@ -4,16 +4,26 @@ import { cartService } from "../services/index.js";
 
 const getCart = async (req, res) => {
     try {
-        const { url, method } = req;
+        const { originalUrl, method } = req;
         const username = req.query.username;
-        const cart = await cartService.findCart(username); 
+        const newCart ={
+            username: username,
+            products: []
+        };
+        const existingCart = await cartService.findCart(username); 
         
-        if (url && method) {
-            logger.info(`Route ${method} ${url} implemented`);
-            if (cart) {
-            return res.render("cart", {cart, username});
+        if (originalUrl && method) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
+
+            if (existingCart && (existingCart.products.length !== 0)) {
+                return res.render("cart", {existingCart, username});
             } else {
-            return res.render("cartError");
+                if (!existingCart) {
+                    await cartService.createCart(newCart); 
+                    return res.render("cartError");
+                } else {
+                    return res.render("cartError");
+                }
             }    
         }
     } catch (err) {
@@ -23,8 +33,9 @@ const getCart = async (req, res) => {
   
 const postCart = async (req, res) => {
     try {
-        const { url, method } = req;
-        const username = req.query.username;
+        const { originalUrl, method } = req;
+        const username = req.body.username;
+        
         const newProduct = {
             id: req.body.id,
             title: req.body.title,
@@ -36,16 +47,16 @@ const postCart = async (req, res) => {
             username: username,
             products: []
         };
-        
         const existingCart = await cartService.findCart(username); 
 
-        if (url && method) {
-            logger.info(`Route ${method} ${url} implemented`);
+        if (originalUrl && method) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
             
             if (existingCart) {
                 await cartService.updateCart(username, newProduct); 
             } else {
                 await cartService.createCart(newCart); 
+                await cartService.updateCart(username, newProduct); 
             }
 
             res.sendStatus(200);    
@@ -59,12 +70,12 @@ const postCart = async (req, res) => {
   
 const getCartPurchase = async (req, res) => {
     try {
-        const { url, method } = req;
+        const { originalUrl, method } = req;
         const username = req.query.username;
         const cart = await cartService.findCart(username); 
 
-        if (url && method) {
-            logger.info(`Route ${method} ${url} implemented`);
+        if (originalUrl && method) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
             
             if (cart) {
               sendMail.sendMailNewOrder(cart, username);
@@ -78,7 +89,6 @@ const getCartPurchase = async (req, res) => {
         res.sendStatus(500);
     }
 };
-
 
 export const cartController = {
     getCart,

@@ -6,10 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getIndex = (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
   
-    if (url && method) {
-      logger.info(`Route ${method} ${url} implemented`);
+    if (originalUrl && method) {
+      logger.info(`Route ${method} ${originalUrl} implemented`);
       res.sendFile(join(__dirname, "../../views/index.html"));
     };
   };

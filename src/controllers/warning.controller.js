@@ -1,10 +1,10 @@
 import logger from "../lib/logger.lib.js";
 
 const getWarningNotRoute = (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
   
-    logger.warn(`Route ${method} ${url} implemented`);
-    res.send(`Route ${method} ${url} not implemented`);
+    logger.warn(`Route ${method} ${originalUrl} implemented`);
+    res.send(`Route ${method} ${originalUrl} not implemented`);
 };
   
 export const warningController = {

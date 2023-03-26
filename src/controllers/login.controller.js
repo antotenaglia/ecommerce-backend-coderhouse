@@ -6,10 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getLogin = (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
   
-    if (url && method) {
-      logger.info(`Route ${method} ${url} implemented`)
+    if (originalUrl && method) {
+      logger.info(`Route ${method} ${originalUrl} implemented`)
       
       if (req.isAuthenticated()) {
         const user = req.user; 
@@ -32,10 +32,10 @@ const getLogin = (req, res) => {
   };
 
 const getLoginFailure = (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
   
-    if (url && method) {
-      logger.info(`Route ${method} ${url} implemented`)
+    if (originalUrl && method) {
+      logger.info(`Route ${method} ${originalUrl} implemented`)
       res.render("loginError");
     }
   };

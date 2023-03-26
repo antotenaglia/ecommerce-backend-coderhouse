@@ -1,6 +1,7 @@
 <div>
     <h2>BIENVENIDO/A: {{username}}</h2> 
     <form action="/logout" method="get">
+        <input type="hidden" name="username" value="{{username}}">
         <input type="submit" value="Cerrar sesión">
     </form> 
     <br/>

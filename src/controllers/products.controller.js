@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getProducts = async (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
     const username = req.query.username;
     const products = new productsContainer(join(__dirname, "../../products.txt")); 
     let productsList = await products.getAllProducts();
@@ -16,24 +16,23 @@ const getProducts = async (req, res) => {
       element.username = username;
     });
     
-    if (url && method) {
-        logger.info(`Route ${method} ${url} implemented`);
+    if (originalUrl && method) {
+        logger.info(`Route ${method} ${originalUrl} implemented`);
         
         return res.render("products", {productsList, username});
     }
 };
   
 const getProductsLoading = async (req, res) => {
-    const { url, method } = req;
+    const { originalUrl, method } = req;
     const username = req.query.username;
       
-    if (url && method) {
-        logger.info(`Route ${method} ${url} implemented`);
+    if (originalUrl && method) {
+        logger.info(`Route ${method} ${originalUrl} implemented`);
         
         return res.render("productsLoading", {username});
     }
 };
-
 
 export const productsController = {
     getProducts,

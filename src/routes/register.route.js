@@ -10,8 +10,8 @@ router
     .post(uploadFileMiddleware.single("photo"), registerController.postRegister);
 
 
-router
-    .route("/fail")
-    .get(registerController.getRegisterFailure);
+// router
+//     .route("/fail")
+//     .get(registerController.getRegisterFailure);
 
 export const registerRouter = router;

@@ -1,18 +1,20 @@
 import logger from "../lib/logger.lib.js";
 
 const getLogout = (req, res) => {
-    const user = req.user;
-    const { url, method } = req;
+    //const user = req.user;
+    const username = req.query.username;
+    const { originalUrl, method } = req;
   
-    if (url && method) {
-      logger.info(`Route ${method} ${url} implemented`);
+    if (originalUrl && method) {
+      logger.info(`Route ${method} ${originalUrl} implemented`);
 
       req.session.destroy((err) => {
         if (err) {
-          res.json(err);
+          res.json(`Error while logout: ${err}`);
+
           logger.error(`Error while logout: ${err}`);
         } else {
-          return res.render("logout", { username: user.username });
+          return res.render("logout", { username: username });
         }
       });   
     }

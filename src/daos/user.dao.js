@@ -13,7 +13,7 @@ const createUser = async (newUser) => {
 
 const findUser = async (username) => {
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: username });
     
         return user;
       } catch (err) {
