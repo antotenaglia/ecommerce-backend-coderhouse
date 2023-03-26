@@ -9,7 +9,7 @@ const getLogin = (req, res) => {
     const { url, method } = req;
   
     if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`)
+      logger.info(`Route ${method} ${url} implemented`)
       
       if (req.isAuthenticated()) {
         const user = req.user; 
@@ -35,7 +35,7 @@ const getLoginFailure = (req, res) => {
     const { url, method } = req;
   
     if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`)
+      logger.info(`Route ${method} ${url} implemented`)
       res.render("loginError");
     }
   };

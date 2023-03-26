@@ -1,5 +1,5 @@
 const isAdmin = (req, res, next) => {
-    if (req.user.username === "anto@anto.com") {
+    if (req.query.username === "anto@anto.com") {    //me falta un paso mas para que no se cambie desde el query
         return next();
     } else {
         return res.render("noPermission");

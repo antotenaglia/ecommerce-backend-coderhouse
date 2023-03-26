@@ -17,7 +17,7 @@ const getProducts = async (req, res) => {
     });
     
     if (url && method) {
-        logger.info(`Ruta ${method} ${url} implementada`);
+        logger.info(`Route ${method} ${url} implemented`);
         
         return res.render("products", {productsList, username});
     }
@@ -28,7 +28,7 @@ const getProductsLoading = async (req, res) => {
     const username = req.query.username;
       
     if (url && method) {
-        logger.info(`Ruta ${method} ${url} implementada`);
+        logger.info(`Route ${method} ${url} implemented`);
         
         return res.render("productsLoading", {username});
     }

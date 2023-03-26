@@ -5,11 +5,12 @@ const getLogout = (req, res) => {
     const { url, method } = req;
   
     if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`)
+      logger.info(`Route ${method} ${url} implemented`);
+
       req.session.destroy((err) => {
         if (err) {
           res.json(err);
-          logger.error(err);
+          logger.error(`Error while logout: ${err}`);
         } else {
           return res.render("logout", { username: user.username });
         }

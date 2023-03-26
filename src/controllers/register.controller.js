@@ -1,7 +1,9 @@
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import logger from "../lib/logger.lib.js";
-import { User } from "../models/user.model.js";
+import { userService } from "../services/index.js";
+import bcrypt from "bcrypt";
+import { sendMail } from "../nodemailer.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,52 +13,66 @@ const hashPassword = (password) => {
   }; 
 
 const getRegister = (req, res) => {
-    const { url, method } = req;
+    try {
+        const { url, method } = req;
   
-    if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`);
-      res.sendFile(join(__dirname, "../../views/register.html"));
-    };
+        if (url && method) {
+          logger.info(`Route ${method} ${url} implemented`);
+    
+          res.sendFile(join(__dirname, "../../views/register.html"));
+        };
+    } catch (err) {
+        logger.error(`error while getting register html: ${err}`);
+
+        return res.json(`error while getting register html: ${err}`);
+    } 
 };
   
 const postRegister = async (req, res) => { 
     try {
-      const existingUser = await User.findOne({ username: req.body.username });
-  
-      if (existingUser) {
-        return res.render("registerError");
-      } 
-  
-      const newUser = {
-        username: req.body.username,
-        password: hashPassword(req.body.password),
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        address: req.body.address,
-        age: req.body.age,
-        phone: req.body.phone,
-        photo: `http://localhost:3000/images/${req.file.filename}`,
-      };
-  
-      const createdUser = await User.create(newUser);
-      
-      sendMail.sendMailNewRegister(createdUser);
-      
-      return res.render("home", createdUser);
-    
+        const username = req.body.username;
+        const newUser = {
+            username: req.body.username,
+            password: hashPassword(req.body.password),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            address: req.body.address,
+            age: req.body.age,
+            phone: req.body.phone,
+            photo: `http://localhost:3000/images/${req.file.filename}`,
+          };
+        const existingUser = await userService.findUser(username); 
+
+        if (existingUser) {
+            return res.render("registerError");
+        } else {
+            const createdUser = await userService.createUser(newUser); 
+
+            sendMail.sendMailNewRegister(createdUser);
+
+            return res.render("home", createdUser);
+        }
     } catch (err) {
-      logger.error(err);
-      return res.json("error while register", err);
+      logger.error(`error while register: ${err}`);
+
+      return res.json(`error while register: ${err}`);
     }
 };
   
 const getRegisterFailure = (req, res) => {
-    const { url, method } = req;
+    try {
+        const { url, method } = req;
   
-    if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`)
-      res.render("registerError");
-    }
+        if (url && method) {
+        logger.info(`Route ${method} ${url} implemented`);
+
+        res.render("registerError");
+        }
+    } catch (err) {
+        logger.error(`error while getting register failure: ${err}`);
+  
+        return res.json(`error while getting register failure: ${err}`);
+    } 
 };
 
 export const registerController = {

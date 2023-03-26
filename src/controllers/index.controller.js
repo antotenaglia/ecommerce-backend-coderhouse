@@ -9,7 +9,7 @@ const getIndex = (req, res) => {
     const { url, method } = req;
   
     if (url && method) {
-      logger.info(`Ruta ${method} ${url} implementada`);
+      logger.info(`Route ${method} ${url} implemented`);
       res.sendFile(join(__dirname, "../../views/index.html"));
     };
   };
