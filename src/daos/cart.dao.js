@@ -1,7 +1,6 @@
 import { Cart } from "../models/cart.model.js";
 import logger from "../lib/logger.lib.js";
 
-
 const createCart = async (newCart) => {
     try {
         const cart = await Cart.create(newCart);

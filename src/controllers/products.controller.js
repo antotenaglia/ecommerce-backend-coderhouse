@@ -1,15 +1,18 @@
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+//import { dirname, join } from "path";
+//import { fileURLToPath } from "url";
 import logger from "../lib/logger.lib.js";
-import productsContainer from "../container/products.container.js";
+//import productsContainer from "../container/products.container.js";
+import productsFactoryDao from "../daos/products.factory.dao.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = dirname(__filename);
+
+const products = await productsFactoryDao.getDAO();
 
 const getProducts = async (req, res) => {
     const { originalUrl, method } = req;
     const username = req.query.username;
-    const products = new productsContainer(join(__dirname, "../../products.txt")); 
+    //const products = new productsContainer(join(__dirname, "../../products.txt")); 
     let productsList = await products.getAllProducts();
     
     productsList.forEach(element => {

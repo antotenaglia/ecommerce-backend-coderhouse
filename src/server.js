@@ -21,7 +21,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-//se obtiene puerto  y modo de la linea de comandos
+//se obtiene puerto y modo de la linea de comandos
 const args = yargs(process.argv.slice(2))
   .alias({
     p: "port",
@@ -92,7 +92,6 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   app.use(passport.session());
   
   passport.use("login", passportStrategies.loginStrategy);
-  //passport.use("register", passportStrategies.registerStrategy);
   
   passport.serializeUser((user, done) => {
     done(null, user._id);

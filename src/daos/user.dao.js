@@ -17,7 +17,7 @@ const findUser = async (username) => {
     
         return user;
       } catch (err) {
-        logger.error(`Error finding cart: ${err}`);
+        logger.error(`Error finding user: ${err}`);
       }  
 };
 

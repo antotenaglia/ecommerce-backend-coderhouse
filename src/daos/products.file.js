@@ -1,7 +1,8 @@
 import * as fs from 'fs';
+import logger from '../lib/logger.lib.js';
 
 //lógica para obtener lista de productos de "products.txt"
-class productsContainer {
+class productsFile {
     constructor(route) {
       this.route = route;
     }
@@ -10,11 +11,11 @@ class productsContainer {
         try {
             const data = await fs.promises.readFile(this.route, "utf-8");
             return JSON.parse(data)
-        } catch (error) {
-            console.log("ERROR:", error)
+        } catch (err) {
+            logger.error(`Error reading products for .txt:" ${err}`)
             return [];
         }
     }  
 }
 
-export default productsContainer;
+export default productsFile;
