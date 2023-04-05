@@ -27,7 +27,7 @@ const sendMailNewRegister = async ({username, firstname, lastname, address, age,
         const info = await transporter.sendMail(mailOptions);
         logger.info(info);
     } catch (err) {
-        logger.error(`Error al enviar email de registro: ${err}`);
+        logger.error(`Error sending register email: ${err}`);
     }
 }
 
@@ -46,7 +46,7 @@ const sendMailNewOrder = async (cart, username) => {
         const info = await transporter.sendMail(mailOptions);
         logger.info(info);
     } catch (err) {
-        logger.error(`Error al enviar email de pedido: ${err}`);
+        logger.error(`Error sending new order email : ${err}`);
     }
 }
 

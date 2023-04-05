@@ -1,8 +1,9 @@
-import mongoDB from "./products.mongoDB.js";
+import productsMongo from "./products.mongo.js";
 import productsFile from "./products.file.js";
 import { config } from "../config/config.js";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { Product } from "../models/product.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,7 +11,7 @@ let dao;
 
 switch (config.db) {
     case 'MONGO': 
-        dao = new mongoDB(config.mongoUrl);
+        dao = new productsMongo(Product);
 
         break;
     case 'FILE':

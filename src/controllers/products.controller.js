@@ -1,43 +1,57 @@
-//import { dirname, join } from "path";
-//import { fileURLToPath } from "url";
 import logger from "../lib/logger.lib.js";
-//import productsContainer from "../container/products.container.js";
 import productsFactoryDao from "../daos/products.factory.dao.js";
 
-//const __filename = fileURLToPath(import.meta.url);
-//const __dirname = dirname(__filename);
-
-const products = await productsFactoryDao.getDAO();
+const product = await productsFactoryDao.getDAO();
 
 const getProducts = async (req, res) => {
     const { originalUrl, method } = req;
     const username = req.query.username;
-    //const products = new productsContainer(join(__dirname, "../../products.txt")); 
-    let productsList = await products.getAllProducts();
+    //let productsList = await product.getAllProducts();
+    let productsWithQuotes = await product.getProductQuoter();
     
-    productsList.forEach(element => {
+    productsWithQuotes.forEach(element => {
       element.username = username;
     });
     
     if (originalUrl && method) {
         logger.info(`Route ${method} ${originalUrl} implemented`);
         
-        return res.render("products", {productsList, username});
+        return res.render("products", {productsWithQuotes, username});
     }
 };
   
 const getProductsLoading = async (req, res) => {
     const { originalUrl, method } = req;
-    const username = req.query.username;
       
     if (originalUrl && method) {
         logger.info(`Route ${method} ${originalUrl} implemented`);
         
-        return res.render("productsLoading", {username});
+        return res.render("productsLoading");
+    }
+};
+
+const postProductsLoading = async (req, res) => { 
+    try {
+        const newProduct = {
+            id: req.body.id,
+            title: req.body.title,
+            price: req.body.price,
+            stock: req.body.stock,
+            thumbnail: req.body.thumbnail,
+        };
+        
+        const createdProduct = await product.createProduct(newProduct); 
+        
+        res.sendStatus(200);    
+    } catch (err) {
+      logger.error(`error while loading product: ${err}`);
+
+      return res.json(`error while loading product: ${err}`);
     }
 };
 
 export const productsController = {
     getProducts,
-    getProductsLoading
+    getProductsLoading,
+    postProductsLoading
 };

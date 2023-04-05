@@ -6,10 +6,10 @@
     </form>
     <h2>LISTADO DE PRODUCTOS</h2>
     <ul>
-        {{#each productsList}}
+        {{#each productsWithQuotes}}
             <h2>{{this.title}}</h2>
             <img src="{{this.thumbnail}}" alt="productImage" width="100px">
-            <p>PRECIO: ${{this.price}}</p>
+            <p>PRECIO: $ {{this.arsPrice}} / US$ {{this.usdPrice}} </p>
             <form action="/cart" method="post">
                 <input type="hidden" name="id" value="{{this.id}}">
                 <input type="hidden" name="title" value="{{this.title}}">

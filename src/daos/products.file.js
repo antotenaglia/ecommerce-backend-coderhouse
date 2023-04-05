@@ -9,8 +9,8 @@ class productsFile {
 
     async getAllProducts() {
         try {
-            const data = await fs.promises.readFile(this.route, "utf-8");
-            return JSON.parse(data)
+            const product = await fs.promises.readFile(this.route, "utf-8");
+            return JSON.parse(product)
         } catch (err) {
             logger.error(`Error reading products for .txt:" ${err}`)
             return [];

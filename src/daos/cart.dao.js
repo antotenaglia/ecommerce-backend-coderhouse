@@ -4,7 +4,7 @@ import logger from "../lib/logger.lib.js";
 const createCart = async (newCart) => {
     try {
         const cart = await Cart.create(newCart);
-
+        
         return cart;
       } catch (err) {
         logger.error(`Error creating cart: ${err}`);
