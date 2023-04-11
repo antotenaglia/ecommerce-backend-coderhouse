@@ -27,6 +27,26 @@ export default class productsMongo {
         }  
     };
 
+    async deleteProduct (id) {
+        try {
+            const product = await this.collection.deleteOne({ id: id });
+        
+            return product;
+        } catch (err) {
+            logger.error(`Error deleting product in mongo: ${err}`);
+        }  
+    };
+
+    async updateProduct (productToUpdate, id) {
+        try {
+            const product = await this.collection.updateOne({ id: id }, productToUpdate);
+        
+            return product;
+        } catch (err) {
+            logger.error(`Error deleting product in mongo: ${err}`);
+        }  
+    };
+
     async getProductQuoter() {
         try {
             const product = await this.collection.find().lean();
@@ -43,6 +63,6 @@ export default class productsMongo {
         } catch (err) {
             logger.error(`Error getting product quoter: ${err}`);
         }
-    }
+    };
 };
 

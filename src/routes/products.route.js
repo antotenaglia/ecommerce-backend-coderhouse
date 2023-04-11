@@ -7,11 +7,20 @@ const router = Router();
 
 router
     .route("/")
-    .get(productsController.getProducts);
+    .get(productsController.getProducts)
 
 router
     .route("/loading")
     .get(isAdmin, productsController.getProductsLoading)
-    .post(productsController.postProductsLoading);
+    .post(productsController.postProductsLoading)
+
+router
+    .route("/delete/:id")
+    .delete(isAdmin, productsController.deleteProduct)
+
+router
+    .route("/update/:id")
+    .get(isAdmin, productsController.getProductsUpdating)
+    .put(isAdmin, productsController.updateProduct)
 
 export const productRouter = router;

@@ -1,12 +1,15 @@
 {
   "type": "module",
   "scripts": {
-    "start": "nodemon ./src/server.js MONGO --m FORK"
+    "start": "nodemon ./src/server.js MONGO --m FORK",
+    "test": "mocha ./src/test/*.test.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/node": "^18.14.0",
     "autocannon": "^7.10.0",
     "bcrypt": "^5.1.0",
+    "chai": "^4.3.7",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.3",
@@ -18,6 +21,7 @@
     "firebase": "^9.15.0",
     "firebase-admin": "^11.5.0",
     "knex": "^2.4.2",
+    "mocha": "^10.2.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.3",
     "multer": "^1.4.5-lts.1",
@@ -29,6 +33,7 @@
     "pug": "^3.0.2",
     "socket.io": "^4.5.4",
     "sqlite3": "^5.1.4",
+    "supertest": "^6.3.3",
     "util": "^0.12.5",
     "yargs": "^17.6.2"
   }

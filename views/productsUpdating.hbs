@@ -1,0 +1,34 @@
+<div>
+    <h2>ACTUALIZACIÓN DE PRODUCTOS</h2>
+    {{!-- <form  action="/products/update/{{this.id}}" method="put"><br><br> --}}
+      {{!-- <input type="text" placeholder="Id" name="id"><br><br> --}}
+      <input type="text" placeholder="Producto" name="title" id="title"><br><br>
+      <input type="number" placeholder="Precio" name="price" id="price"><br><br>
+      <input type="number" placeholder="Stock" name="stock" id="stock"><br><br>
+      <input type="text" placeholder="URL de foto" name="thumbnail" id="thumbnail"><br><br>
+    {{!-- </form> --}}
+    <input type="button" value="Actualizar producto" onclick="updateProduct({{this.id}})"> Sólo admin <br/> <br/> 
+    <input type="submit" value="Actualizar producto"><br><br>
+</div>
+<script>
+    async function updateProduct(id) {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        const title = document.getElementById("title").value;
+        const price = document.getElementById("price").value;
+        const stock = document.getElementById("stock").value;
+        const thumbnail = document.getElementById("thumbnail").value;
+        let username = params.username;
+        const res = await fetch('/products/update/' + id + "?username=" + username, {
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify({title: title, price: price, stock: stock, thumbnail: thumbnail})
+        });
+    }
+</script>
+
+

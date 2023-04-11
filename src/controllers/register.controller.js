@@ -59,24 +59,7 @@ const postRegister = async (req, res) => {
     }
 };
   
-// const getRegisterFailure = (req, res) => {
-//     try {
-//         const { originalUrl, method } = req;
-  
-//         if (originalUrl && method) {
-//         logger.info(`Route ${method} ${originalUrl} implemented`);
-
-//         res.render("registerError");
-//         }
-//     } catch (err) {
-//         logger.error(`error while getting register failure: ${err}`);
-  
-//         return res.json(`error while getting register failure: ${err}`);
-//     } 
-// };
-
 export const registerController = {
     getRegister,
     postRegister,
-    //getRegisterFailure
 };
