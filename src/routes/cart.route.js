@@ -1,15 +1,12 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { cartController } from "../controllers/cart.controller.js";
 
-const router = Router();
+const router = new Router({
+    prefix: "/cart"
+});
 
-router
-    .route("/")
-    .get(cartController.getCart)
-    .post(cartController.postCart);
-
-router
-    .route("/purchase")
-    .get(cartController.getCartPurchase);
+router.get("/", cartController.getCart);
+router.post("/", cartController.postCart);
+router.get("/purchase", cartController.getCartPurchase);
 
 export const cartRouter = router;

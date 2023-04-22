@@ -5,40 +5,37 @@ import logger from "../lib/logger.lib.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getLogin = (req, res) => {
-    const { originalUrl, method } = req;
-  
-    if (originalUrl && method) {
-      logger.info(`Route ${method} ${originalUrl} implemented`)
+const getLogin = (ctx) => {
+    if (ctx.method && ctx.originalUrl) {
+        logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
       
-      if (req.isAuthenticated()) {
-        const user = req.user; 
+        if (ctx.isAuthenticated()) {
+          const user = ctx.user; 
+    
+          ctx.render("home", 
+            {
+              username: user.username,
+              firstname: user.firstname,
+              lastname: user.lastname,
+              address: user.address,
+              age: user.age,
+              phone: user.phone,
+              photo: user.photo,
+            }
+          );
+        }
   
-        return res.render("home", 
-          {
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            address: user.address,
-            age: user.age,
-            phone: user.phone,
-            photo: user.photo,
-          }
-        );
-      }
-  
-      res.sendFile(join(__dirname, "../../views/login.html"));
+        ctx.html(join(__dirname, "../../views/login.html"));
     }
   };
 
-const getLoginFailure = (req, res) => {
-    const { originalUrl, method } = req;
-  
-    if (originalUrl && method) {
-      logger.info(`Route ${method} ${originalUrl} implemented`)
-      res.render("loginError");
+const getLoginFailure = (ctx) => {  
+    if (ctx.method && ctx.originalUrl) {
+        logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
+
+        ctx.render("loginError");
     }
-  };
+};
 
 export const loginController = {
     getLogin,

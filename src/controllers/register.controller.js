@@ -4,6 +4,7 @@ import logger from "../lib/logger.lib.js";
 import { userService } from "../services/index.js";
 import bcrypt from "bcrypt";
 import { sendMail } from "../nodemailer.js";
+import { User } from "../models/user.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,50 +13,51 @@ const hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }; 
 
-const getRegister = (req, res) => {
+const getRegister = (ctx) => {
     try {
-        const { originalUrl, method } = req;
+        if (ctx.method && ctx.originalUrl) {
+            logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
 
-        if (originalUrl && method) {
-          logger.info(`Route ${method} ${originalUrl} implemented`);
-    
-          res.sendFile(join(__dirname, "../../views/register.html"));
+            ctx.html(join(__dirname, "../../views/register.html"));
         };
     } catch (err) {
-        logger.error(`error while getting register html: ${err}`);
+        logger.error(`Error while getting register html: ${err}`);
 
-        return res.json(`error while getting register html: ${err}`);
-    } 
+        ctx.body = { 
+            data: `Error while getting register html: ${err}`,
+        };
+    }; 
 };
   
-const postRegister = async (req, res) => { 
+const postRegister = async (ctx) => { 
     try {
-        const username = req.body.username;
         const newUser = {
-            username: req.body.username,
-            password: hashPassword(req.body.password),
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            address: req.body.address,
-            age: req.body.age,
-            phone: req.body.phone,
-            photo: `http://localhost:3000/images/${req.file.filename}`,
-          };
-        const existingUser = await userService.findUser(username); 
+            username: ctx.request.body,
+            password: hashPassword(ctx.request.body),
+            firstname: ctx.request.body,
+            lastname: ctx.request.body,
+            address: ctx.request.body,
+            age: ctx.request.body,
+            phone: ctx.request.body,
+            photo: `http://localhost:3000/images/${ctx.request.body}`,
+        };
+        const existingUser = await User.findOne({username: newUser.username}); 
 
         if (existingUser) {
-            return res.render("registerError");
+            ctx.render("registerError");
         } else {
-            const createdUser = await userService.createUser(newUser); 
+            const createdUser = await User.create(newUser); 
 
             sendMail.sendMailNewRegister(createdUser);
 
-            return res.render("home", createdUser);
+            ctx.render("home", createdUser);
         }
     } catch (err) {
-      logger.error(`error while register: ${err}`);
+        logger.error(`error while register: ${err}`);
 
-      return res.json(`error while register: ${err}`);
+        ctx.body = { 
+            data: `Error while register: ${err}`,
+        };
     }
 };
   

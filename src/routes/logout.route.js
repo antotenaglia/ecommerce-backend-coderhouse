@@ -1,11 +1,10 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { logoutController } from "../controllers/logout.controller.js";
 
-const router = Router();
+const router = new Router({
+    prefix: "/logout"
+});
 
-router
-    .route("/")
-    .get(logoutController.getLogout);
-
+router.get("/", logoutController.getLogout);
 
 export const logoutRouter = router;

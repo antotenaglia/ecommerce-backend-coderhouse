@@ -1,25 +1,16 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { productsController } from "../controllers/products.controller.js";
 import isAdmin from "../middleware/admin.mddleware.js";
 
-const router = Router();
+const router = new Router({
+    prefix: "/products"
+});
 
-router
-    .route("/")
-    .get(productsController.getProducts)
-
-router
-    .route("/loading")
-    .get(isAdmin, productsController.getProductsLoading)
-    .post(productsController.postProductsLoading)
-
-router
-    .route("/delete/:id")
-    .delete(isAdmin, productsController.deleteProduct)
-
-router
-    .route("/update/:id")
-    .get(isAdmin, productsController.getProductsUpdating)
-    .put(isAdmin, productsController.updateProduct)
+router.get("/", productsController.getProducts);
+router.get("/loading", isAdmin, productsController.getProductsLoading)
+router.post("/loading", productsController.postProductsLoading)
+router.delete("/delete/:id", isAdmin, productsController.deleteProduct)
+router.get("/update/:id", isAdmin, productsController.getProductsUpdating)
+router.put("/update/:id", isAdmin, productsController.updateProduct)
 
 export const productRouter = router;

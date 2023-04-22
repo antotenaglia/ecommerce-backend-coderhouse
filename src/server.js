@@ -15,11 +15,16 @@ import cluster from "cluster";
 import os from "os";
 import logger from "./lib/logger.lib.js";
 import path from "path";
+import Koa from "koa";
+import { koaBody } from "koa-body";
+//import hbs from "koa-hbs";
+import koaHtmlRender from "koa-html-render";
+import renderer from "koa-hbs-renderer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app = express();
+const app = new Koa();
 
 //se obtiene puerto y modo de la linea de comandos
 const args = yargs(process.argv.slice(2))
@@ -54,11 +59,28 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     useUnifiedTopology: true,
   };
   
+  //se configuran rutas con koa
+  app.use(koaBody());
+  app.use(koaHtmlRender("src"));
+  app.use(router.routes()).use(router.allowedMethods());
+    
+  //se configura con koa si una ruta no se encuentra
+  app.use((ctx) => {
+    ctx.response.status = 404;
+
+    logger.warn(`Route ${ctx.method} ${ctx.url} not implemented`);
+
+    ctx.body = {
+        status: "Not found",
+        message: `Route ${ctx.method} ${ctx.url} not implemented`,
+    };
+  });
+
   app.use(json());
   app.use(urlencoded({ extended: true }));
 
   //se accede a archivos estáticos a través de la carpeta uploads
-  app.use("/images", express.static(path.join(__dirname + "/uploads")))
+  //app.use("/images", express.static(path.join(__dirname + "/uploads")))
   
   //se persisten las sesiones en mongo Atlas
   app.use(
@@ -77,15 +99,23 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     })
   );
   
-  //se definen vistas en hbs
-  app.engine('hbs', engine({
-    extname: ".hbs",
-    defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
-    layoutsDir: join(__dirname, "/views/layouts"),
-    partialsDir: join(__dirname, "/views")
+  //se definen vistas en hbs con koa
+  app.use(renderer({
+      paths: {
+        views: join(__dirname, "../views/layouts/main.hbs"),
+        layouts: join(__dirname, "../views/layouts"),
+        partials: join(__dirname, "/views")
+      }
   }));
+
+  // app.engine('hbs', engine({
+  //   extname: ".hbs",
+  //   defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
+  //   layoutsDir: join(__dirname, "/views/layouts"),
+  //   partialsDir: join(__dirname, "/views")
+  // }));
   
-  app.set('view engine', 'hbs');
+  //app.set('view engine', 'hbs');
   
   //se configura passport
   app.use(passport.initialize());
@@ -103,21 +133,20 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     done(null, user);
   });
   
-  //se define que la ruta "/" use router
-  app.use("/", router);
-  
   //se crea db para los usuarios registrados
   mongoose.connect(config.mongoUrl);
 
+  //se conecta servidor
   const connectedServer = app.listen(process.env.PORT || 3000, () => {
     if (process.env.PORT) {
-      logger.info(`Servidor HTTP escuchando en el puerto ${process.env.PORT}`);
+      logger.info(`Server listening in port ${process.env.PORT}`);
     } else {
-      logger.info("Servidor HTTP escuchando en el puerto 3000");
+      logger.info("Servidor listening in port 3000");
     }  
   });
+
   connectedServer.on("error", (error) =>
-    logger.error(`Error en el servidor: ${error}`)
+    logger.error(`Server connection error: ${error}`)
   );
 }
 

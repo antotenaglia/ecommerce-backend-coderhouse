@@ -1,10 +1,10 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { indexController } from "../controllers/index.controller.js";
 
-const router = Router();
+const router = new Router({
+    prefix: "/index"
+});
 
-router
-    .route("/")
-    .get(indexController.getIndex)
+router.get("/", indexController.getIndex);
 
 export const indexRouter = router;
