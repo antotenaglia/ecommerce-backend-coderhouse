@@ -17,9 +17,10 @@ import logger from "./lib/logger.lib.js";
 import path from "path";
 import Koa from "koa";
 import { koaBody } from "koa-body";
-//import hbs from "koa-hbs";
 import koaHtmlRender from "koa-html-render";
 import renderer from "koa-hbs-renderer";
+import views from "koa-views";
+import hbs from "koa-hbs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -58,12 +59,35 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
+
+  app.use(json());
+  app.use(urlencoded({ extended: true }));
   
   //se configuran rutas con koa
-  app.use(koaBody());
-  app.use(koaHtmlRender("src"));
   app.use(router.routes()).use(router.allowedMethods());
-    
+
+  //se configura uso de body, html y render con koa
+  app.use(koaBody());
+
+  app.use(koaHtmlRender("src"));
+
+  app.use(renderer({
+      paths: {
+        views: join(__dirname, "../views/layouts/main.hbs"),
+        layouts: join(__dirname, "../views/layouts"),
+        partials: join(__dirname, "/views")
+      }
+  }));
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // app.use(hbs.middleware({
+  //   viewPath: join(__dirname, "../views/layouts/main.hbs"),
+  //   partialsPath: join(__dirname, "/views")
+  // }));
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // const render = views(path.join(__dirname, "../views"), { extension: 'hbs' });
+  // app.use(render);
+  //////////////////////////////////////////////////////////////////////////////////////////
+
   //se configura con koa si una ruta no se encuentra
   app.use((ctx) => {
     ctx.response.status = 404;
@@ -75,9 +99,6 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
         message: `Route ${ctx.method} ${ctx.url} not implemented`,
     };
   });
-
-  app.use(json());
-  app.use(urlencoded({ extended: true }));
 
   //se accede a archivos estáticos a través de la carpeta uploads
   //app.use("/images", express.static(path.join(__dirname + "/uploads")))
@@ -99,15 +120,6 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
     })
   );
   
-  //se definen vistas en hbs con koa
-  app.use(renderer({
-      paths: {
-        views: join(__dirname, "../views/layouts/main.hbs"),
-        layouts: join(__dirname, "../views/layouts"),
-        partials: join(__dirname, "/views")
-      }
-  }));
-
   // app.engine('hbs', engine({
   //   extname: ".hbs",
   //   defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
@@ -115,7 +127,7 @@ if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
   //   partialsDir: join(__dirname, "/views")
   // }));
   
-  //app.set('view engine', 'hbs');
+  // app.set('view engine', 'hbs');
   
   //se configura passport
   app.use(passport.initialize());
