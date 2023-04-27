@@ -16,7 +16,7 @@ const getIndex = (ctx) => {
     if (ctx.method && ctx.originalUrl) {
         logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
         
-        ctx.html("views/index.html");      
+        ctx.html("index.html");      
   };
 };
 

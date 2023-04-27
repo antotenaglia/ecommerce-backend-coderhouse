@@ -1,16 +1,16 @@
 <div>
     <h2>MI CARRITO DE COMPRAS</h2>
-    <form action="/cart" method="get">
+    <form action="/api/cart" method="get">
         <input type="hidden" name="username" value="{{username}}">
         <input type="submit" value="Ver carrito"> <br/> <br/> 
     </form>
     <h2>LISTADO DE PRODUCTOS</h2>
     <ul>
-        {{#each productsWithQuotes}}
+        {{#each products}}
             <h2>{{this.title}}</h2>
             <img src="{{this.thumbnail}}" alt="productImage" width="100px">
-            <p>PRECIO: $ {{this.arsPrice}} / US$ {{this.usdPrice}} </p>
-            <form action="/cart" method="post">
+            <p>PRECIO: $ {{this.price}} </p>
+            <form action="/api/cart" method="post">
                 <input type="hidden" name="id" value="{{this.id}}">
                 <input type="hidden" name="title" value="{{this.title}}">
                 <input type="hidden" name="price" value="{{this.price}}">
@@ -20,7 +20,7 @@
                 <input type="submit" value="Agregar al carrito"> <br/> <br/> 
             </form>
             <input type="button" value="Borrar producto" onclick="deleteProduct({{this.id}})"> Sólo admin <br/> <br/> 
-            <form action="/products/update/{{this.id}}" method="get">
+            <form action="/api/products/update/{{this.id}}" method="get">
                 <input type="hidden" name="id" value="{{this.id}}">
                 <input type="hidden" name="username" value="{{this.username}}">
                 <input type="submit" value="Actualizar producto"> Sólo admin <br/> <br/> 
@@ -34,8 +34,8 @@
             get: (searchParams, prop) => searchParams.get(prop),
         });
         let username = params.username;
-        const res = await fetch('/products/delete/' + id + "?username=" + username, {
-            method: 'DELETE'
+        const res = await fetch("/api/products/delete/" + id + "?username=" + username, {
+            method: "DELETE"
         });
         
         if(res.status === 200) {

@@ -7,6 +7,7 @@ const router = new Router({
 });
 
 router.get("/", registerController.getRegister);
-router.post("/", uploadFileMiddleware.single("photo"), registerController.postRegister);
+//router.post("/", uploadFileMiddleware.single("photo"), registerController.postRegister);
+router.post("/", registerController.postRegister);
 
 export const registerRouter = router;

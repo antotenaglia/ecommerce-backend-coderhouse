@@ -39,8 +39,8 @@ const getCart = async (ctx) => {
                 ctx.response.status = 200;
             } else {
                 if (!existingCart) {
-                    await Cart.create(username, []);
-
+                    await Cart.create({username: username, products: []});
+                    
                     ctx.render("cartError");
                 } else {
                     ctx.response.status = 500;

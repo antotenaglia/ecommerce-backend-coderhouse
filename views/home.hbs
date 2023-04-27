@@ -1,6 +1,6 @@
 <div>
     <h2>BIENVENIDO/A: {{username}}</h2> 
-    <form action="/logout" method="get">
+    <form action="/api/logout" method="get">
         <input type="hidden" name="username" value="{{username}}">
         <input type="submit" value="Cerrar sesión">
     </form> 
@@ -11,25 +11,25 @@
     <h3>Tel: {{phone}}</h3>
     <h3>Dirección: {{address}}</h3>
     <h3>Edad: {{age}}</h3>
-    <img style="width: 100px" src="{{photo}}" alt="photo"> 
+    {{!-- <img style="width: 100px" src="{{photo}}" alt="photo">  --}}
     <br/>
     <br/>
     <div>
       <ul>
         <li>
-            <form action="/products" method="get">
+            <form action="/api/products" method="get">
                 <input type="hidden" name="username" value="{{username}}">
                 <input type="submit" value="Ver productos"> <br/> <br/> 
             </form>
         </li>
         <li>
-            <form action="/cart" method="get">
+            <form action="/api/cart" method="get">
                 <input type="hidden" name="username" value="{{username}}">
                 <input type="submit" value="Ver carrito"> <br/> <br/> 
             </form>
         </li>
                 <li>
-            <form action="/products/loading" method="get">
+            <form action="/api/products/loading" method="get">
                 <input type="hidden" name="username" value="{{username}}">
                 <input type="submit" value="Ingresar productos"> <br/> <br/> 
             </form>
@@ -39,7 +39,7 @@
 </div>
 <script>
     function login() {
-        location.href = '/login'
+        location.href = '/api/login'
     }
 
     setTimeout(login, 60000)

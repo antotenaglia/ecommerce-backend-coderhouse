@@ -20,5 +20,4 @@ if (config.nodeEnv.toLocaleUpperCase() === "PROD") {
     logger = buildDevLogger;
 }
 
-
 export default logger;

@@ -24,8 +24,8 @@ const getLogin = (ctx) => {
             }
           );
         }
-  
-        ctx.html(join(__dirname, "../../views/login.html"));
+
+        ctx.html(join("login.html"));
     }
   };
 

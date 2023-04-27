@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const hashPassword = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+    return bcrypt.hashSync(password.toString(), bcrypt.genSaltSync(10));
   }; 
 
 const getRegister = (ctx) => {
@@ -18,7 +18,7 @@ const getRegister = (ctx) => {
         if (ctx.method && ctx.originalUrl) {
             logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
 
-            ctx.html(join(__dirname, "../../views/register.html"));
+            ctx.html("register.html");
         };
     } catch (err) {
         logger.error(`Error while getting register html: ${err}`);
@@ -31,26 +31,19 @@ const getRegister = (ctx) => {
   
 const postRegister = async (ctx) => { 
     try {
-        const newUser = {
-            username: ctx.request.body,
-            password: hashPassword(ctx.request.body),
-            firstname: ctx.request.body,
-            lastname: ctx.request.body,
-            address: ctx.request.body,
-            age: ctx.request.body,
-            phone: ctx.request.body,
-            photo: `http://localhost:3000/images/${ctx.request.body}`,
-        };
-        const existingUser = await User.findOne({username: newUser.username}); 
-
+        const { username, password, firstname, lastname, address, age, phone } = ctx.request.body;  
+        //no me está guardando contraseña con hashpassword
+        //const { password } = hashPassword(ctx.request.body); 
+        const existingUser = await User.findOne( {username: username} ); 
+        
         if (existingUser) {
             ctx.render("registerError");
         } else {
-            const createdUser = await User.create(newUser); 
+            const createdUser = await User.create({username, password, firstname, lastname, address, age, phone}); 
 
             sendMail.sendMailNewRegister(createdUser);
 
-            ctx.render("home", createdUser);
+            ctx.render("home", {username, firstname, lastname, address, age, phone});
         }
     } catch (err) {
         logger.error(`error while register: ${err}`);

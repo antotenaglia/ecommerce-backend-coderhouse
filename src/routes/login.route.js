@@ -8,7 +8,8 @@ const router = new Router({
 });
 
 router.get("/", loginController.getLogin);
-router.post("/", passport.authenticate("login", { failureRedirect: "/login/fail" }), uploadFileMiddleware.single("photo"), loginController.getLogin);  
+router.post("/", passport.authenticate("login", { failureRedirect: "/login/fail" }), loginController.getLogin);
+//router.post("/", passport.authenticate("login", { failureRedirect: "/login/fail" }), uploadFileMiddleware.single("photo"), loginController.getLogin);  
 router.get("/fail", loginController.getLoginFailure);
 
 export const loginRouter = router;

@@ -6,7 +6,7 @@ import { Product } from "../models/product.model.js";
 
 const getProducts = async (ctx) => {
     const username = ctx.query.username;
-    const products = await Product.find();
+    const products = await Product.find().lean();
     
     products.forEach(element => {
       element.username = username;
@@ -15,7 +15,7 @@ const getProducts = async (ctx) => {
     if (ctx.method && ctx.originalUrl) {
         logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
         
-        return res.render("products", {products, username});
+        return ctx.render("products", { products, username });
     }
 };
  

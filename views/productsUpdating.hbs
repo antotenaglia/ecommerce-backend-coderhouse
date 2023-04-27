@@ -1,12 +1,9 @@
 <div>
     <h2>ACTUALIZACIÓN DE PRODUCTOS</h2>
-    {{!-- <form  action="/products/update/{{this.id}}" method="put"><br><br> --}}
-      {{!-- <input type="text" placeholder="Id" name="id"><br><br> --}}
-      <input type="text" placeholder="Producto" name="title" id="title"><br><br>
-      <input type="number" placeholder="Precio" name="price" id="price"><br><br>
-      <input type="number" placeholder="Stock" name="stock" id="stock"><br><br>
-      <input type="text" placeholder="URL de foto" name="thumbnail" id="thumbnail"><br><br>
-    {{!-- </form> --}}
+    <input type="text" placeholder="Producto" name="title" id="title"><br><br>
+    <input type="number" placeholder="Precio" name="price" id="price"><br><br>
+    <input type="number" placeholder="Stock" name="stock" id="stock"><br><br>
+    <input type="text" placeholder="URL de foto" name="thumbnail" id="thumbnail"><br><br>
     <input type="button" value="Actualizar producto" onclick="updateProduct({{this.id}})"> Sólo admin <br/> <br/> 
     <input type="submit" value="Actualizar producto"><br><br>
 </div>
@@ -20,12 +17,12 @@
         const stock = document.getElementById("stock").value;
         const thumbnail = document.getElementById("thumbnail").value;
         let username = params.username;
-        const res = await fetch('/products/update/' + id + "?username=" + username, {
+        const res = await fetch("/api/products/update/" + id + "?username=" + username, {
             headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Content-Type": "application/json"
             },
-            method: 'PUT',
+            method: "PUT",
             body: JSON.stringify({title: title, price: price, stock: stock, thumbnail: thumbnail})
         });
     }

@@ -8,7 +8,7 @@ const userSchema = new Schema({
   address: String,
   age: Number,
   phone: Number,
-  photo: Buffer,
+  //photo: Buffer,
 });
 
 export const User = model("User", userSchema);
