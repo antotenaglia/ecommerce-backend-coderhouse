@@ -1,27 +1,46 @@
 <div>
     <h2>MI CARRITO DE COMPRAS</h2>
-    <form action="/api/cart" method="get">
+    <form action="/cart" method="get">
         <input type="hidden" name="username" value="{{username}}">
         <input type="submit" value="Ver carrito"> <br/> <br/> 
     </form>
     <h2>LISTADO DE PRODUCTOS</h2>
+    <br>
+    {{#each categories}} 
+        <form action="/products/{{this.value}}" method="get">
+            <input  name="username" type="hidden" value="{{this.username}}">
+            <input type="submit" value="{{this.value}}"> <br/> <br/> 
+        </form>
+    {{/each}}
     <ul>
-        {{#each products}}
+        {{#each productsList}}
             <h2>{{this.title}}</h2>
             <img src="{{this.thumbnail}}" alt="productImage" width="100px">
             <p>PRECIO: $ {{this.price}} </p>
-            <form action="/api/cart" method="post">
-                <input type="hidden" name="id" value="{{this.id}}">
+            <form action="/products/product/{{this._id}}" method="get">
+            <input type="hidden" name="_id" value="{{this._id}}">
                 <input type="hidden" name="title" value="{{this.title}}">
                 <input type="hidden" name="price" value="{{this.price}}">
-                <input type="hidden" name="stock" value="{{this.stock}}">
                 <input type="hidden" name="thumbnail" value="{{this.thumbnail}}">
                 <input type="hidden" name="username" value="{{this.username}}">
-                <input type="submit" value="Agregar al carrito"> <br/> <br/> 
+                <input type="hidden" name="category" value="{{this.category}}">
+                <input type="hidden" name="description" value="{{this.description}}">
+                <input type="submit" value="Ver más detalles"> <br/> <br/> 
             </form>
-            <input type="button" value="Borrar producto" onclick="deleteProduct({{this.id}})"> Sólo admin <br/> <br/> 
-            <form action="/api/products/update/{{this.id}}" method="get">
-                <input type="hidden" name="id" value="{{this.id}}">
+            <form action="/cart" method="post">
+                <input type="hidden" name="_id" value="{{this._id}}">
+                <input type="hidden" name="title" value="{{this.title}}">
+                <input type="hidden" name="price" value="{{this.price}}">
+                <input type="hidden" name="thumbnail" value="{{this.thumbnail}}">
+                <input type="hidden" name="username" value="{{this.username}}">
+                <input type="hidden" name="category" value="{{this.category}}">
+                <input type="hidden" name="description" value="{{this.description}}">
+                <input type="submit" value="Agregar al carrito"> 
+                <input type="number" placeholder="Indique Cantidad" name="quantity" value="{{product.quantity}}">
+            </form>
+            <br>
+            <input id="{{this._id}}" type="button" value="Borrar producto" onclick="deleteProduct(this.id)"> Sólo admin <br/> <br/> 
+            <form action="/products/update/{{this._id}}" method="get">
                 <input type="hidden" name="username" value="{{this.username}}">
                 <input type="submit" value="Actualizar producto"> Sólo admin <br/> <br/> 
             </form>
@@ -29,20 +48,21 @@
     </ul>   
 </div>
 <script>
-    async function deleteProduct(id) {
+    async function deleteProduct(_id) {
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
         let username = params.username;
-        const res = await fetch("/api/products/delete/" + id + "?username=" + username, {
-            method: "DELETE"
+        const res = await fetch('/products/delete/' + _id + "?username=" + username, {
+            method: 'DELETE'
         });
         
         if(res.status === 200) {
-            location.reload();
+            document.write(await res.text());
         }
     }
 </script>
+
 
 
 

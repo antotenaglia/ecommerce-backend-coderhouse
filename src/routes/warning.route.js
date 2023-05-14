@@ -1,10 +1,10 @@
-// import Router from "koa-router";
-// import { warningController } from "../controllers/warning.controller.js";
+import { Router } from "express";
+import { warningController } from "../controllers/warning.controller.js";
 
-// const router = new Router({
-//     prefix: "/"
-// });
+const router = Router();
 
-// router.get("*", warningController.getWarningNotRoute);
+router
+    .route("*")
+    .get(warningController.getWarningNotRoute);
 
-// export const warningRouter = router;
+export const warningRouter = router;

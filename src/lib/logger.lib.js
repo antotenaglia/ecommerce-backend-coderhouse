@@ -5,19 +5,19 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-//en modo producción, se guardan en un archivo los "error" y "warn"
 const buildProdLogger = pino ({level: "warn"}, pino.destination(join(__dirname, "../../loggers/warn.log")),{level: "error"}, pino.destination(join(__dirname, "../../loggers/error.log")));
-
-//en modo desarrollo, se loguean en la consola todos los errores debajo del nivel "info", xej "error" y "warn"
 const buildDevLogger = pino ({level: "debug"});
 
 let logger;
 
 if (config.nodeEnv.toLocaleUpperCase() === "PROD") {
     logger = buildProdLogger;
-} else {
+    
+    config.mongoUrl = process.env.MONGO_URL_PROD;
+} else if (config.nodeEnv.toLocaleUpperCase() === "DEV") {
     logger = buildDevLogger;
-}
+
+    config.mongoUrl = process.env.MONGO_URL_DEV;    
+};
 
 export default logger;

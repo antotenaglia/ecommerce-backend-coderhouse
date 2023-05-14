@@ -1,0 +1,27 @@
+<div>
+    <h2>CHAT SUMMARY</h2>
+    <br>
+    {{#each messagesList}}
+        <p>MESSAGES OF: <strong style="color: blue">{{this.username}}</strong></p>
+        {{#each this.messages}}
+            <div> 
+                <br>
+                <span style="color: brown">{{this.dateAndTime}}:</span> <em style="color: green">{{this.newMessage}}</em> 
+            </div>
+        {{/each}}
+        <br>
+        <div id="{{this.username}}">
+        </div>
+        <br>
+        <form class="messageSubmit" id="form+{{this.username}}">
+            <input type="hidden" name="username" value="{{this.admin}}">
+            <strong style="color: blue" id="usernameInput">{{this.admin}}</strong>
+            <input id="message+{{this.username}}" type="text" name="messageInput" placeholder="Mensaje"/>
+            <input type="submit" value="Enviar"/>
+        </form>
+        <br>
+    {{/each}}
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/admin.socket.js"></script>   
+</div>
+

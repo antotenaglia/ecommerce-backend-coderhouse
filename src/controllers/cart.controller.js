@@ -1,149 +1,123 @@
 import logger from "../lib/logger.lib.js";
-import { sendMail } from "../nodemailer.js";
 import { cartService } from "../services/index.js";
-import { Cart } from "../models/cart.model.js";
 
-const getCart = async (ctx) => {
+const getCart = async (req, res) => {
     try {
-        //const { originalUrl, method } = req;
-        //const username = req.query.username;
-        // const newCart ={
-        //     username: username,
-        //     products: []
-        // };
-        // const existingCart = await cartService.findCart(username); 
+        const { originalUrl, method } = req;
+        const username = req.query.username;
+        const newCart ={
+            username: username,
+            products: [],
+        };
+        const existingCart = await cartService.findCart(username); 
         
-        //if (originalUrl && method) {
-            //logger.info(`Route ${method} ${originalUrl} implemented`);
+        if (originalUrl && method && username) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
 
-            // if (existingCart && (existingCart.products.length !== 0)) {
-            //     return res.render("cart", {existingCart, username});
-            // } else {
-            //     if (!existingCart) {
-            //         await cartService.createCart(newCart); 
-            //         return res.render("cartError");
-            //     } else {
-            //         return res.render("cartError");
-            //     }
-            // }   
-        
-        if (ctx.method && ctx.originalUrl) {
-            logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
-            
-            const username = ctx.query.username; 
-            const existingCart = await Cart.findOne({username: username});
-            
-            if (existingCart && (existingCart.products.length !== 0)) {
-                ctx.render("cart", {existingCart, username});
-
-                ctx.response.status = 200;
+            if (existingCart && (existingCart.products.length !== 0)) { 
+                const _idCart = existingCart._id.valueOf();
+                
+                return res.render("cart", {existingCart, _idCart, username});
             } else {
                 if (!existingCart) {
-                    await Cart.create({username: username, products: []});
-                    
-                    ctx.render("cartError");
+                    await cartService.createCart(newCart); 
+                    return res.render("cartEmpty");
                 } else {
-                    ctx.response.status = 500;
-
-                    ctx.render("cartError");
+                    return res.render("cartEmpty");
                 }
-            } 
+            }    
+        } else {
+            return res.render("noUserRegistered");
         }
     } catch (err) {
         logger.error(`Error getting Cart: ${err}`);
     }
-}
+};
   
-const postCart = async (ctx) => {
+const postCart = async (req, res) => {
     try {
-        // const { originalUrl, method } = req;
-        // const username = req.body.username;
+        const { originalUrl, method } = req;
+        const username = req.body.username;
+        let newProduct = {
+            _idProduct: req.body._id,
+            title: req.body.title,
+            price: req.body.price,
+            thumbnail: req.body.thumbnail,
+            category: req.body.category,
+            description: req.body.description, 
+            quantity: req.body.quantity,
+        };
+        const newCart ={
+            username: username,
+            products: [],
+        };
+        const existingCart = await cartService.findCart(username); 
         
-        // const newProduct = {
-        //     id: req.body.id,
-        //     title: req.body.title,
-        //     price: req.body.price,
-        //     stock: req.body.stock,
-        //     thumbnail: req.body.thumbnail
-        // };
-        // const newCart ={
-        //     username: username,
-        //     products: []
-        // };
-        // const existingCart = await cartService.findCart(username); 
-
-        // if (originalUrl && method) {
-        //     logger.info(`Route ${method} ${originalUrl} implemented`);
+        if (originalUrl && method && username) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
             
-        //     if (existingCart) {
-        //         await cartService.updateCart(username, newProduct); 
-        //     } else {
-        //         await cartService.createCart(newCart); 
-        //         await cartService.updateCart(username, newProduct); 
-        //     }
-        
-        if (ctx.method && ctx.originalUrl) {
-            logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
-            
-            const username = ctx.query.username; 
-            const { id, title, price, stock, thumbnail } = ctx.request.body;
-            const existingCart = await Cart.findOne({username: username});
-
             if (existingCart) {
-                await Cart.updateOne({username: username}, { id, title, price, stock, thumbnail });
+                for (let i = 0; i < existingCart.products.length; i++) {
+                    if (existingCart.products[i]._idProduct === newProduct._idProduct) {
+                        newProduct.quantity = Number(existingCart.products[i].quantity) + Number(newProduct.quantity);
+                    }; 
+                };   
+
+                await cartService.updateCart(username, newProduct);      
             } else {
-                await Cart.create(username, []);
-                await Cart.updateOne({username: username}, { id, title, price, stock, thumbnail });
-            }
-        
-            ctx.response.status = 200;
+                newCart.products.push(newProduct);
+
+                await cartService.createCart(newCart); 
+            };
+
+            res.sendStatus(200);    
+        } else {
+            return res.render("noUserRegistered");
         }
     } catch (err) {
         logger.error(`Error posting Cart: ${err}`);
 
-        ctx.response.status = 500;
-                
-        ctx.body = { 
-            data: "Error posting Cart",
-        };
+        res.sendStatus(500);
     }
+};
+
+const deleteCart = async (req, res) => {
+    try {
+        const { originalUrl, method } = req;
+        let { _idCart } = req.params;
+        
+        if (originalUrl && method) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
+            
+            await cartService.deleteCart(_idCart);
+
+            return res.sendStatus(200);
+        };
+    } catch (err) {
+        logger.error(`Error deleting Product: ${err}`);
+    };
+};
+
+const deleteProductInCart = async (req, res) => {
+    try {
+        const { originalUrl, method } = req;
+        let { _idCart, _idProduct } = req.params;
+        
+        if (originalUrl && method) {
+            logger.info(`Route ${method} ${originalUrl} implemented`);
+
+            await cartService.deleteProductInCart(_idCart, _idProduct);
+
+            return res.sendStatus(200);
+        };
+    } catch (err) {
+        logger.error(`Error deleting Product: ${err}`);
+    };
 };
   
-const getCartPurchase = async (ctx) => {
-    try {
-        // const { originalUrl, method } = req;
-        //const username = req.query.username;
-        // const cart = await cartService.findCart(username); 
-
-        // if (originalUrl && method) {
-        //     logger.info(`Route ${method} ${originalUrl} implemented`);
-        if (ctx.method && ctx.originalUrl) {
-            logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
-            
-            const username = ctx.query.username;
-            const cart = await Cart.findOne({username: username});
-        
-            if (cart) {
-                ctx.response.status = 200;
-
-                sendMail.sendMailNewOrder(cart, username);
-    
-                ctx.render("cartPurchase", {username});
-            }
-        }
-    } catch (err) {
-        logger.error(`Error getting Cart Purchase: ${err}`);
-
-        ctx.response.status = 500;
-                
-        ctx.body = { 
-            data: "Error getting Cart Purchase",
-        };
-    }
-};
-
 export const cartController = {
     getCart,
     postCart,
-    getCartPurchase  
+    deleteCart,
+    deleteProductInCart,
 };

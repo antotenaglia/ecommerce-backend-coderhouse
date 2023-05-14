@@ -1,0 +1,19 @@
+<div>
+    <h2>LIVE CHAT!</h2>
+    <form action="/chat/{{username}}" method="get">
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="submit" value="Ver historial de mis mensajes"> <br/> <br/> 
+    </form>
+    <br>
+    <form id="messageForm">
+        <input type="hidden" name="username" value="{{username}}">
+        <strong style="color: blue" id="usernameInput">{{username}}</strong>
+        <input id="messageInput" type="text" name="messageInput" placeholder="Mensaje"/>
+        <input type="submit" value="Enviar"/>
+    </form>
+    <br><br>
+    <div id="messagesPool"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.socket.js"></script>   
+</div>
+

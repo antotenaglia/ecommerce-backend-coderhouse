@@ -1,13 +1,12 @@
-import Router from "koa-router";
+import { Router } from "express";
 import { registerController } from "../controllers/register.controller.js";
 import uploadFileMiddleware from "../lib/multer.lib.js";
 
-const router = new Router({
-    prefix: "/register"
-});
+const router = Router();
 
-router.get("/", registerController.getRegister);
-//router.post("/", uploadFileMiddleware.single("photo"), registerController.postRegister);
-router.post("/", registerController.postRegister);
+router
+    .route("/")
+    .get(registerController.getRegister)
+    .post(uploadFileMiddleware.single("photo"), registerController.postRegister);
 
 export const registerRouter = router;

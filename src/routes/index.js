@@ -1,22 +1,26 @@
-import Router from "koa-router";
+import { Router } from "express";
 import { cartRouter } from "./cart.route.js";
+import { chatRouter } from "./chat.route.js";
+import { configRouter } from "./config.route.js";
 import { indexRouter } from "./index.route.js";
 import { loginRouter } from "./login.route.js";
 import { logoutRouter } from "./logout.route.js";
 import { productRouter } from "./products.route.js";
 import { registerRouter } from "./register.route.js";
-//import { warningRouter } from "./warning.route.js";
+import { orderRouter } from "./order.route.js";
+import { warningRouter } from "./warning.route.js";
 
-const router = new Router({
-    prefix: "/api",
-  });
-  
-router.use(cartRouter.routes());
-router.use(indexRouter.routes());
-router.use(loginRouter.routes());
-router.use(logoutRouter.routes());
-router.use(productRouter.routes());
-router.use(registerRouter.routes());
-//router.use(warningRouter.routes());
+const router = Router();
+
+router.use("/cart", cartRouter);
+router.use("/chat", chatRouter);
+router.use("/config", configRouter);
+router.use("/index", indexRouter);
+router.use("/login", loginRouter);
+router.use("/logout", logoutRouter);
+router.use("/products", productRouter);
+router.use("/register", registerRouter);
+router.use("/order", orderRouter);
+router.use("/", warningRouter);
 
 export default router;

@@ -2,29 +2,35 @@
     <h2>ACTUALIZACIÓN DE PRODUCTOS</h2>
     <input type="text" placeholder="Producto" name="title" id="title"><br><br>
     <input type="number" placeholder="Precio" name="price" id="price"><br><br>
-    <input type="number" placeholder="Stock" name="stock" id="stock"><br><br>
     <input type="text" placeholder="URL de foto" name="thumbnail" id="thumbnail"><br><br>
-    <input type="button" value="Actualizar producto" onclick="updateProduct({{this.id}})"> Sólo admin <br/> <br/> 
-    <input type="submit" value="Actualizar producto"><br><br>
+    <input type="text" placeholder="Categoría" name="category" id="category"><br><br>
+    <input type="text" placeholder="Descripción" name="description" id="description"><br><br>
+    <input type="button" value="Actualizar producto" onclick="updateProduct()"><br/> <br/> 
 </div>
 <script>
-    async function updateProduct(id) {
+    async function updateProduct() {
+        let _id = window.location.href.split('/').at(-1).split('?').at(0);
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
         const title = document.getElementById("title").value;
         const price = document.getElementById("price").value;
-        const stock = document.getElementById("stock").value;
         const thumbnail = document.getElementById("thumbnail").value;
+        const category = document.getElementById("category").value;
+        const description = document.getElementById("description").value;
         let username = params.username;
-        const res = await fetch("/api/products/update/" + id + "?username=" + username, {
+        const res = await fetch('/products/update/' + _id + "?username=" + username, {
             headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-            method: "PUT",
-            body: JSON.stringify({title: title, price: price, stock: stock, thumbnail: thumbnail})
-        });
+            method: 'PUT',
+            body: JSON.stringify({title: title, price: price, thumbnail: thumbnail, category: category, description: description})
+        });   
+
+        if(res.status === 200) {
+            location.reload();
+        } 
     }
 </script>
 

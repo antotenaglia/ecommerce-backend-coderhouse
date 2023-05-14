@@ -1,0 +1,26 @@
+[
+  {
+    "_id": 1,
+    "title": "Remera",
+    "price": 1465,
+    "thumbnail": "http://d3ugyf2ht6aenh.cloudfront.net/stores/001/110/871/products/remera-gris1-47195b33e6e14831cc16097722042131-640-0.jpg",
+    "category": "Top clothes",
+    "description": "Gris lisa"
+  },
+  {
+    "_id": 2,
+    "title": "Pantalón",
+    "price": 5490,
+    "thumbnail": "https://alcatraz.com.ar/wp-content/uploads/2018/05/Pantalon-Ripstop-negro-frente-sin-cinto.jpg",
+    "category": "Bottom clothes",
+    "description": "Jean negro"
+  },
+  {
+    "_id": 3,
+    "title": "Camisa",
+    "price": 4150,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_753289-MLA53603290127_022023-W.jpg",
+    "category": "Top clothes",
+    "description": "Azul lisa"
+  }
+]

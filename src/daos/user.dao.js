@@ -8,7 +8,7 @@ const createUser = async (newUser) => {
         return user;
       } catch (err) {
         logger.error(`Error creating user: ${err}`);
-      }  
+      };  
 };
 
 const findUser = async (username) => {
@@ -18,10 +18,10 @@ const findUser = async (username) => {
         return user;
       } catch (err) {
         logger.error(`Error finding user: ${err}`);
-      }  
+      };  
 };
 
 export const userDao = {
     createUser,
     findUser
-}
+};

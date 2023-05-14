@@ -4,7 +4,7 @@ import { loginController } from "./login.controller.js";
 import { logoutController } from "./logout.controller.js";
 import { productsController } from "./products.controller.js";
 import { registerController } from "./register.controller.js";
-//import { warningController } from "./warning.controller.js";
+import { warningController } from "./warning.controller.js";
 
 export {
     cartController,
@@ -13,7 +13,7 @@ export {
     logoutController,
     productsController,
     registerController,
-    //warningController
+    warningController
 };
 
 

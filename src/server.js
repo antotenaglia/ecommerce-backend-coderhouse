@@ -1,12 +1,12 @@
 import express, { json, urlencoded } from "express";
 import router from "./routes/index.js";
-//import session from "express-session";  
+import session from "express-session";  
 import MongoStore from "connect-mongo";
 import { config } from "./config/config.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { engine } from "express-handlebars";
-//import passport from "passport";
+import passport from "passport";
 import { User } from "./models/user.model.js";
 import { passportStrategies } from "./lib/passport.lib.js";
 import mongoose from "mongoose";
@@ -15,145 +15,117 @@ import cluster from "cluster";
 import os from "os";
 import logger from "./lib/logger.lib.js";
 import path from "path";
-import Koa from "koa";
-import { koaBody } from "koa-body";
-import renderer from "koa-hbs-renderer";
-import views from "koa-views";
-import hbs from "koa-hbs";
-import htmlRender from "koa-html-render";
-import  passport from "koa-passport";
-import session from "koa-session";
-import bodyParser from "koa-bodyparser";
+import { Server as IOServer } from "socket.io";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app = new Koa();
-app.use(bodyParser());
-app.keys = ['secret'];
-app.use(session({}, app));
+const app = express();
 
-//se obtiene puerto y modo de la linea de comandos
 const args = yargs(process.argv.slice(2))
   .alias({
-    p: "port",
-    m: "mode",
+      m: "mode",
   })
   .default({
-    port: 8080,
-    mode: "FORK",
+      mode: "FORK",
   }).argv;
 
-//se crea el servidor en modo CLUSTER
 const cpus = os.cpus();
 
 if (args.mode.toUpperCase() === "CLUSTER" && cluster.isPrimary) {
-  console.log(`CPUS: ${cpus.length} - Primary PID: ${process.pid}`);
-    
-  cpus.map(() => {
-    cluster.fork();
-  });
+    console.log(`CPUS: ${cpus.length} - Primary PID: ${process.pid}`);
+      
+    cpus.map(() => {
+        cluster.fork();
+    });
 
-  cluster.on("exit", (worker) => {
-    console.log(`Worker ${worker.process.pid} died`);
+    cluster.on("exit", (worker) => {
+        console.log(`Worker ${worker.process.pid} died`);
 
-    cluster.fork();
-  });
+        cluster.fork();
+    });
 } else {
-  //se crea el servidor en modo FORK
-  const mongoOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
- 
-  //se configura uso de body, html y render con koa
-  app.use(koaBody({ multipart: true }));
-  app.use(htmlRender("views"));
-  app.use(renderer({
-    paths: {
-      views: path.join("views"),
-    }
-  }));
-
-  //se configuran rutas con koa
-  app.use(router.routes()).use(router.allowedMethods());
-
-  //se configura con koa si una ruta no se encuentra
-  app.use((ctx) => {
-    ctx.response.status = 404;
-
-    logger.warn(`Route ${ctx.method} ${ctx.url} not implemented`);
-
-    ctx.body = {
-        status: "Not found",
-        message: `Route ${ctx.method} ${ctx.url} not implemented`,
+    const mongoOptions = {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     };
-  });
+    
+    app.use(json());
+    app.use(urlencoded({ extended: true }));
 
-  //se accede a archivos estáticos a través de la carpeta uploads
-  //app.use("/images", express.static(path.join(__dirname + "/uploads")))
-  
-  app.use(json());
-  app.use(urlencoded({ extended: true }));
+    app.use("/images", express.static(path.join(__dirname + "/uploads")))
+    app.use(express.static(path.join(__dirname + "/public")));
 
-  //se persisten las sesiones en mongo Atlas
-  app.use(
-    session({
-      secret: config.mongoSecret,
-      rolling: true, //reinicia el tiempo de expiracion de las sesiones con cada request
-      resave: false,
-      saveUninitialized: false,
-      store: new MongoStore({
-        mongoUrl: config.mongoUrl,
-        mongoOptions,
-      }),
-      cookie: {
-        maxAge: 600000, //tiempo de expiración de la sesión - 10 min
-      }, 
-    }, app)
-  );
-  
-  // app.engine('hbs', engine({
-  //   extname: ".hbs",
-  //   defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
-  //   layoutsDir: join(__dirname, "/views/layouts"),
-  //   partialsDir: join(__dirname, "/views")
-  // }));
-  
-  // app.set('view engine', 'hbs');
-  
-  //se configura passport
-  app.use(passport.initialize());
-  app.use(passport.session());
-  
-  passport.use("login", passportStrategies.loginStrategy);
-  
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-  
-  passport.deserializeUser(async (id, done) => {
-    const user = await User.findById(id);
-  
-    done(null, user);
-  });
-  
-  //se crea db para los usuarios registrados
-  mongoose.connect(config.mongoUrl);
+    app.use(
+        session({
+            secret: config.mongoSecret,
+            rolling: true, 
+            resave: false,
+            saveUninitialized: false,
+            store: new MongoStore({
+              mongoUrl: config.mongoUrl,
+              mongoOptions,
+            }),
+            cookie: {
+              maxAge: Number(config.sessionExpirationTime),
+            },
+          })
+    );
+    
+    app.engine('hbs', engine({
+        extname: ".hbs",
+        defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
+        layoutsDir: join(__dirname, "/views/layouts"),
+        partialsDir: join(__dirname, "/views")
+    }));
+    
+    app.set('view engine', 'hbs');
+    
+    app.use(passport.initialize());
+    app.use(passport.session());
+    
+    passport.use("login", passportStrategies.loginStrategy);
+    
+    passport.serializeUser((user, done) => {
+        done(null, user._id);
+    });
+    
+    passport.deserializeUser(async (id, done) => {
+        const user = await User.findById(id);
+      
+        done(null, user);
+    });
+    
+    app.use("/", router);
+    
+    mongoose.connect(config.mongoUrl);
 
-  //se conecta servidor
-  const connectedServer = app.listen(process.env.PORT || 3000, () => {
-    if (process.env.PORT) {
-      logger.info(`Server listening in port ${process.env.PORT}`);
-    } else {
-      logger.info("Server listening in port 3000");
-    }  
-  });
+    const connectedServer = app.listen(config.port || 8080, () => {
+        if (config.port) {
+          logger.info(`Server listening in port ${config.port}`);
+        } else {
+          logger.info("Server listening in port 8080");
+        };  
+    });
+    
+    connectedServer.on("error", (error) =>
+        logger.error(`Server error: ${error}`)
+    );
 
-  connectedServer.on("error", (error) =>
-    logger.error(`Server connection error: ${error}`)
-  );
-}
+    const io = new IOServer(connectedServer);
+    const messages = [];
+
+    io.on("connection", (socket) => {
+        socket.emit("server:message", messages);
+
+        socket.on("client:message", (messageInfo) => {
+            messages.push(messageInfo);
+          
+            io.emit("server:message", messages);
+        });
+    });
+};
+
 
 
 

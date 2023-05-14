@@ -1,15 +1,18 @@
-import Router from "koa-router";
+import { Router } from "express";
 import { loginController } from "../controllers/login.controller.js";
 import passport from "passport";
 import uploadFileMiddleware from "../lib/multer.lib.js";
 
-const router = new Router({
-    prefix: "/login"
-});
+const router = Router();
 
-router.get("/", loginController.getLogin);
-router.post("/", passport.authenticate("login", { failureRedirect: "/login/fail" }), loginController.getLogin);
-//router.post("/", passport.authenticate("login", { failureRedirect: "/login/fail" }), uploadFileMiddleware.single("photo"), loginController.getLogin);  
-router.get("/fail", loginController.getLoginFailure);
+router
+    .route("/")
+    .get(loginController.getLogin)
+    .post(passport.authenticate("login", { failureRedirect: "/login/fail" }), uploadFileMiddleware.single("photo"), loginController.getLogin);  
+
+router
+    .route("/fail")
+    .get(loginController.getLoginFailure);
+
 
 export const loginRouter = router;

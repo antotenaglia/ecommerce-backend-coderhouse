@@ -4,53 +4,67 @@ import logger from "../lib/logger.lib.js";
 import { userService } from "../services/index.js";
 import bcrypt from "bcrypt";
 import { sendMail } from "../nodemailer.js";
-import { User } from "../models/user.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const hashPassword = (password) => {
-    return bcrypt.hashSync(password.toString(), bcrypt.genSaltSync(10));
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }; 
 
-const getRegister = (ctx) => {
-    try {
-        if (ctx.method && ctx.originalUrl) {
-            logger.info(`Route ${ctx.method} ${ctx.originalUrl} implemented`);
+const matchPassword = function(password, passwordRepeated){
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, passwordRepeated, (err, matches) => {
+            if (err) reject(err)
+            else resolve(matches)
+        });
+    });
+};
 
-            ctx.html("register.html");
+const getRegister = (req, res) => {
+    try {
+        const { originalUrl, method } = req;
+
+        if (originalUrl && method) {
+          logger.info(`Route ${method} ${originalUrl} implemented`);
+    
+          res.sendFile(join(__dirname, "../../views/register.html"));
         };
     } catch (err) {
-        logger.error(`Error while getting register html: ${err}`);
+        logger.error(`error while getting register html: ${err}`);
 
-        ctx.body = { 
-            data: `Error while getting register html: ${err}`,
-        };
-    }; 
+        return res.json(`error while getting register html: ${err}`);
+    } 
 };
   
-const postRegister = async (ctx) => { 
+const postRegister = async (req, res) => {    
     try {
-        const { username, password, firstname, lastname, address, age, phone } = ctx.request.body;  
-        //no me está guardando contraseña con hashpassword
-        //const { password } = hashPassword(ctx.request.body); 
-        const existingUser = await User.findOne( {username: username} ); 
+        const username = req.body.username;
+        const newUser = {
+            username: req.body.username,
+            password: hashPassword(req.body.password),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            phone: req.body.phone,
+            photo: `http://localhost:3000/images/${req.file.filename}`,
+            city: req.body.city,
+            address: req.body.address,
+        };
+        const existingUser = await userService.findUser(username); 
         
         if (existingUser) {
-            ctx.render("registerError");
+            return res.render("registerError");
         } else {
-            const createdUser = await User.create({username, password, firstname, lastname, address, age, phone}); 
+            const createdUser = await userService.createUser(newUser); 
 
             sendMail.sendMailNewRegister(createdUser);
 
-            ctx.render("home", {username, firstname, lastname, address, age, phone});
+            return res.render("home", createdUser);
         }
     } catch (err) {
-        logger.error(`error while register: ${err}`);
+      logger.error(`error while register: ${err}`);
 
-        ctx.body = { 
-            data: `Error while register: ${err}`,
-        };
+      return res.json(`error while register: ${err}`);
     }
 };
   

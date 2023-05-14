@@ -1,48 +1,62 @@
 <div>
     <h2>BIENVENIDO/A: {{username}}</h2> 
-    <form action="/api/logout" method="get">
+    <form action="/logout" method="get">
         <input type="hidden" name="username" value="{{username}}">
         <input type="submit" value="Cerrar sesión">
     </form> 
     <br/>
-    <h2>DATOS PERSONALES:</h2>
+    <h2>DATOS PERSONALES</h2>
     <h3>Nombre: {{firstname}}</h3>
     <h3>Apellido: {{lastname}}</h3>
-    <h3>Tel: {{phone}}</h3>
+    <h3>Teléfono: {{phone}}</h3>
+    <h3>Ciudad: {{city}}</h3>
     <h3>Dirección: {{address}}</h3>
-    <h3>Edad: {{age}}</h3>
-    {{!-- <img style="width: 100px" src="{{photo}}" alt="photo">  --}}
+    <img style="width: 100px" src="{{photo}}" alt="photo"> 
     <br/>
     <br/>
     <div>
-      <ul>
-        <li>
-            <form action="/api/products" method="get">
-                <input type="hidden" name="username" value="{{username}}">
-                <input type="submit" value="Ver productos"> <br/> <br/> 
-            </form>
-        </li>
-        <li>
-            <form action="/api/cart" method="get">
-                <input type="hidden" name="username" value="{{username}}">
-                <input type="submit" value="Ver carrito"> <br/> <br/> 
-            </form>
-        </li>
-                <li>
-            <form action="/api/products/loading" method="get">
-                <input type="hidden" name="username" value="{{username}}">
-                <input type="submit" value="Ingresar productos"> <br/> <br/> 
-            </form>
-        </li>
-      </ul>
+        <ul>
+            <li>
+                <form action="/products" method="get">
+                    <input type="hidden" name="username" value="{{username}}">
+                    <input type="submit" value="Ver productos"> <br/> <br/> 
+                </form>
+            </li>
+            <li>
+                <form action="/cart" method="get">
+                    <input type="hidden" name="username" value="{{username}}">
+                    <input type="submit" value="Ver carrito"> <br/> <br/> 
+                </form>
+            </li>
+                    <li>
+                <form action="/products/loading" method="get">
+                    <input type="hidden" name="username" value="{{username}}">
+                    <input type="submit" value="Ingresar productos"> Sólo admin<br/> <br/> 
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h2>LIVE CHAT!</h2>
+        <h3>Chatea con nosotros en vivo</h3>
+        <form action="/chat" method="get">
+            <input type="hidden" name="username" value="{{username}}">
+            <input type="submit" value="Ir a chat"> <br/> <br/> 
+        </form>
+        <h2>CHAT SUMMARY</h2>
+        <form action="/chat/admin" method="get">
+            <input type="hidden" name="username" value="{{username}}">
+            <input type="submit" value="Ir a chat summary"> Sólo admin <br/> <br/> 
+        </form>
     </div>
 </div>
 <script>
     function login() {
-        location.href = '/api/login'
+        location.href = '/login'
     }
 
-    setTimeout(login, 60000)
+    setTimeout(login, 600000)
 </script>
+ 
 
 

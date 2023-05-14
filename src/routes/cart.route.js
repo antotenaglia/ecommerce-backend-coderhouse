@@ -1,12 +1,19 @@
-import Router from "koa-router";
+import { Router } from "express";
 import { cartController } from "../controllers/cart.controller.js";
 
-const router = new Router({
-    prefix: "/cart"
-});
+const router = Router();
 
-router.get("/", cartController.getCart);
-router.post("/", cartController.postCart);
-router.get("/purchase", cartController.getCartPurchase);
+router
+    .route("/")
+    .get(cartController.getCart)
+    .post(cartController.postCart);
+
+router
+    .route("/:_idCart/delete")
+    .delete(cartController.deleteCart);
+
+router
+    .route("/:_idCart/delete/product/:_idProduct")
+    .delete(cartController.deleteProductInCart);
 
 export const cartRouter = router;

@@ -1,20 +1,54 @@
 <div>
-    <h2>CARRITO DE COMPRAS:</h2>
+    <h2>CARRITO DE COMPRAS:</h2><br/> 
+    <form action="/order" method="get"> 
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="submit" value="Finalizar compra"> 
+    </form>
     <ul>
+        <input type="hidden" name="_idCart" id="_idCart" value="{{_idCart}}">
         {{#each existingCart}}
             {{#each this.products}}
                 <h2>{{this.title}}</h2>
                 <img src="{{this.thumbnail}}" alt="productImage" width="100px">
                 <p>PRECIO: $ {{this.price}}</p>
+                <p>CANTIDAD: {{this.quantity}}</p>
+                <input id="{{this._idProduct}}" type="button" value="Borrar producto" onclick="deleteProductInCart(this.id)"><br/> <br/> 
             {{/each}}
+            <br/> 
         {{/each}}
     </ul>
-    <br><br>
-    <form action="/api/cart/purchase" method="get">
-        <input type="hidden" name="username" value="{{username}}">
-        <input type="submit" value="Finalizar compra"> <br/> <br/> 
-    </form>
+    <input id="{{_idCart}}" type="button" value="Borrar carrito" onclick="deleteCart(this.id)">
 </div>
+<script>
+    async function deleteProductInCart(_idProduct) {
+        const _idCart = document.getElementById("_idCart").value;
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        let username = params.username;
+        const res = await fetch('/cart/' + _idCart + '/delete/product/' + _idProduct + "?username=" + username, {
+            method: 'DELETE'
+        });
+        
+        if(res.status === 200) {
+            location.reload();
+        };
+    };
+
+    async function deleteCart(_idCart) {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        let username = params.username;
+        const res = await fetch('/cart/' + _idCart + '/delete/' + "?username=" + username, {
+            method: 'DELETE'
+        });
+        
+        if(res.status === 200) {
+            location.reload();
+        };
+    };
+</script>
 
 
   

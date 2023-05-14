@@ -1,0 +1,23 @@
+<div>
+    <h2>PRODUCTO</h2>
+    <h2>{{product.title}}</h2>
+    <img src="{{product.thumbnail}}" alt="productImage" width="100px">
+    <p>CATEGORY: {{product.category}}</p>
+    <p>PRECIO: $ {{product.price}}</p>
+    <p>DESCRIPCIÓN: {{product.description}} </p>
+    <form action="/cart" method="post">
+        <input type="hidden" name="_id" value="{{product._id}}">
+        <input type="hidden" name="title" value="{{product.title}}">
+        <input type="hidden" name="price" value="{{product.price}}">
+        <input type="hidden" name="thumbnail" value="{{product.thumbnail}}">
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="hidden" name="category" value="{{product.category}}">
+        <input type="hidden" name="description" value="{{product.description}}">
+        <input type="submit" value="Agregar al carrito">
+        <input type="number" placeholder="Indique Cantidad" name="quantity" value="{{product.quantity}}">
+    </form>
+</div>
+
+
+
+

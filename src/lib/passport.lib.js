@@ -12,14 +12,15 @@ const loginStrategy = new LocalStrategy(async (username, password, done) => {
         const user = await User.findOne({ username: username });
 
         if (!user || !validatePassword(password, user.password)) {
-        return done(null, null);   
-        }
+            return done(null, null);   
+        };
 
         done(null, user);
     } catch (err) {
         logger.error(err);
+        
         done("Error while login in", null);
-    }
+    };
 });
 
 export const passportStrategies = { loginStrategy };

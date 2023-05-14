@@ -1,0 +1,13 @@
+<div>
+    <h2>MY MESSAGES</h2>  
+    {{#each findMessagesByUser}}
+        <strong style="color: blue">{{this.username}}</strong>
+        {{#each this.messages}}
+            <div> 
+                <br>
+                <span style="color: brown">{{this.dateAndTime}}:</span> <em style="color: green">{{this.newMessage}}</em> 
+            </div>
+        {{/each}}
+    {{/each}}
+</div>
+
